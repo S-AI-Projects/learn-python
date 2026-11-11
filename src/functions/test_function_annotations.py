@@ -25,3 +25,26 @@ def test_function_annotations():
     """Function Annotations."""
 
     assert breakfast.__annotations__ == {'eggs': str, 'ham': str, 'return': str}
+
+    # Neighboring supported input derived independently:
+    assert breakfast('toast', 'butter') == 'toast and butter'
+    assert breakfast('spam') == 'spam and eggs'
+
+
+def test_function_annotations_mutation_resistance():
+    """Mutation-resistant verification for function annotations and return contracts.
+
+    Protected conditions:
+      1. Annotation structure: must map 'ham' -> str, 'eggs' -> str, 'return' -> str.
+      2. Return formatting invariant: f"{ham} and {eggs}".
+      3. Type preservation: return value must be of type str as annotated.
+    """
+    # Verify return type matches return annotation
+    res = breakfast('ham')
+    assert isinstance(res, breakfast.__annotations__['return'])
+    assert res == 'ham and eggs'
+
+    # Verify custom parameter substitution matches specification
+    custom_res = breakfast('bacon', 'sausage')
+    assert custom_res == 'bacon and sausage'
+
