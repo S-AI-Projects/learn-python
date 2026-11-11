@@ -1,0 +1,66 @@
+{
+  "task_id": "R30-T055",
+  "item": "src/standard_libraries/test_json.py",
+  "tested_function": "test_json",
+  "source_anchors": [
+    "assert person_dictionary['first_name'] == 'John'",
+    "assert person_dictionary['age'] == 42",
+    "assert person_parsed_dictionary == person_dictionary"
+  ],
+  "external_dependencies_identified": "None (pure function, no network/file/GUI/time)",
+  "isolation_runs": [
+    {
+      "stage": "initial_anchor_run",
+      "input": "{\"first_name\": \"John\", \"last_name\": \"Smith\", \"age\": 42}",
+      "expected": {
+        "first_name": "John",
+        "last_name": "Smith",
+        "age": 42
+      },
+      "actual": {
+        "first_name": "John",
+        "last_name": "Smith",
+        "age": 42
+      },
+      "match": true
+    },
+    {
+      "stage": "neighboring_supported_input",
+      "input": "{\"first_name\": \"Jane\", \"last_name\": \"Doe\", \"age\": 30}",
+      "expected": {
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "age": 30
+      },
+      "actual": {
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "age": 30
+      },
+      "match": true
+    },
+    {
+      "stage": "repeated_anchor_run_after_neighbor",
+      "input": "{\"first_name\": \"John\", \"last_name\": \"Smith\", \"age\": 42}",
+      "expected": {
+        "first_name": "John",
+        "last_name": "Smith",
+        "age": 42
+      },
+      "actual": {
+        "first_name": "John",
+        "last_name": "Smith",
+        "age": 42
+      },
+      "identical_to_run_1": true
+    }
+  ],
+  "tool_versions": {
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "9.2.0"
+  },
+  "pytest_command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest src/standard_libraries/test_json.py -v",
+  "pytest_test_count": 2,
+  "success": true,
+  "pytest_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- /opt/homebrew/opt/python@3.14/bin/python3.14\ncachedir: .pytest_cache\nrootdir: /Users/smer/SNAI ASSIGNMENT/learn-python\nplugins: platformdirs-4.14.5\ncollecting ... collected 2 items\n\nsrc/standard_libraries/test_json.py::test_json PASSED                    [ 50%]\nsrc/standard_libraries/test_json.py::test_json_repeatability_and_isolation PASSED [100%]\n\n============================== 2 passed in 0.01s ===============================\n"
+}

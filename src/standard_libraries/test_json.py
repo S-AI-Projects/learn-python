@@ -36,3 +36,45 @@ def test_json():
     encoded_person_string = json.dumps(person_dictionary)
 
     assert encoded_person_string == json_string
+
+
+def test_json_repeatability_and_isolation():
+    """Verify input isolation and deterministic repeatability for JSON operations.
+
+    External dependencies: None (pure serialization/deserialization functions).
+
+    Source anchors:
+      assert person_dictionary['first_name'] == 'John'
+      assert person_dictionary['age'] == 42
+      assert person_parsed_dictionary == person_dictionary
+
+    Neighboring supported input derived independently:
+      dict: {'first_name': 'Jane', 'last_name': 'Doe', 'age': 30}
+      json: '{"first_name": "Jane", "last_name": "Doe", "age": 30}'
+    """
+    anchor_dict = {'first_name': 'John', 'last_name': 'Smith', 'age': 42}
+    anchor_json = '{"first_name": "John", "last_name": "Smith", "age": 42}'
+
+    # First run in fresh isolated state
+    parsed_1 = json.loads(anchor_json)
+    assert parsed_1 == anchor_dict
+    assert parsed_1['first_name'] == 'John'
+    assert parsed_1['age'] == 42
+    assert json.dumps(anchor_dict) == anchor_json
+
+    # Interleaved run with neighboring supported input
+    neighbor_dict = {'first_name': 'Jane', 'last_name': 'Doe', 'age': 30}
+    neighbor_json = '{"first_name": "Jane", "last_name": "Doe", "age": 30}'
+    parsed_neighbor = json.loads(neighbor_json)
+    assert parsed_neighbor == neighbor_dict
+    assert parsed_neighbor['first_name'] == 'Jane'
+    assert parsed_neighbor['age'] == 30
+    assert json.dumps(neighbor_dict) == neighbor_json
+
+    # Second run of anchor fixture to prove isolation (no mutation leakage from neighbor run)
+    parsed_2 = json.loads(anchor_json)
+    assert parsed_2 == anchor_dict
+    assert parsed_2['first_name'] == 'John'
+    assert parsed_2['age'] == 42
+    assert json.dumps(anchor_dict) == anchor_json
+
