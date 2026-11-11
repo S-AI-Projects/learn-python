@@ -1,0 +1,37 @@
+{
+  "task_id": "R30-T057",
+  "item": "src/functions/test_function_documentation_string.py",
+  "tested_function": "test_function_documentation_string",
+  "source_anchors": [
+    "assert do_nothing.__doc__ == \"\"\"Do nothing, but document it.\\n\\n    No, really, it doesn't do anything.\\n    \"\"\""
+  ],
+  "worked_example_trace": {
+    "input_function": "do_nothing",
+    "intermediate_state": {
+      "raw_repr": "\"Do nothing, but document it.\\n\\nNo, really, it doesn't do anything.\\n\"",
+      "total_lines": 3,
+      "line_0_summary": "Do nothing, but document it.",
+      "line_1_separator": "",
+      "line_2_detail": "No, really, it doesn't do anything."
+    },
+    "decisive_transition": "inspect.cleandoc() removes common leading indentation",
+    "final_sections": [
+      "Do nothing, but document it.",
+      "No, really, it doesn't do anything."
+    ],
+    "neighboring_input": {
+      "function": "greet",
+      "docstring": "Return greeting message.",
+      "expected": "Return greeting message.",
+      "match": true
+    }
+  },
+  "tool_versions": {
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "9.2.0"
+  },
+  "pytest_command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest src/functions/test_function_documentation_string.py -v",
+  "pytest_test_count": 2,
+  "success": true,
+  "pytest_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- /opt/homebrew/opt/python@3.14/bin/python3.14\ncachedir: .pytest_cache\nrootdir: /Users/smer/SNAI ASSIGNMENT/learn-python\nplugins: platformdirs-4.14.5\ncollecting ... collected 2 items\n\nsrc/functions/test_function_documentation_string.py::test_function_documentation_string PASSED [ 50%]\nsrc/functions/test_function_documentation_string.py::test_docstring_lifecycle_worked_example PASSED [100%]\n\n============================== 2 passed in 0.01s ===============================\n"
+}
