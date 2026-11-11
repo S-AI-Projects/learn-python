@@ -9,7 +9,14 @@ value of the global variable __name__.
 
 
 def fibonacci_at_position(position):
-    """Return Fibonacci number at specified position"""
+    """Return Fibonacci number at specified position.
+
+    Contract:
+      Input: position (int >= 0), zero-based index in the Fibonacci sequence.
+      Output: int representing F(position) where F(0)=0, F(1)=1, F(2)=1, F(n)=F(n-1)+F(n-2).
+      Mutation: None (pure function; arguments and external state are immutable).
+      Dependencies: None.
+    """
     current_position = 0
     previous_number, current_number = 0, 1
     while current_position < position:
