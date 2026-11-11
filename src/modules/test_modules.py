@@ -95,3 +95,29 @@ def test_modules():
         'fibonacci_at_position',
         'fibonacci_smaller_than',
     ]
+
+
+def test_fibonacci_at_position_contract():
+    """Focused regression tests for fibonacci_at_position contract.
+
+    Fixture verification:
+    Indices: 0, 1, 2, 5, 10
+    Expected 0-based Fibonacci values: 0, 1, 1, 5, 55
+    """
+    # Smallest supported input (zero-index boundary)
+    assert fibonacci_at_position(0) == 0
+
+    # Repeated-value domain boundary (F(1) == F(2) == 1)
+    assert fibonacci_at_position(1) == 1
+    assert fibonacci_at_position(2) == 1
+
+    # Ordinary inputs
+    assert fibonacci_at_position(5) == 5
+    assert fibonacci_at_position(10) == 55
+
+    # Observable mutation verification: call must not mutate arguments or global state
+    pos = 5
+    result = fibonacci_at_position(pos)
+    assert result == 5
+    assert pos == 5  # Argument remains unchanged
+

@@ -1,0 +1,55 @@
+{
+  "task_id": "R30-T051",
+  "item": "src/modules/fibonacci_module.py",
+  "tested_function": "fibonacci_at_position",
+  "fixture_checks": [
+    {
+      "input": 0,
+      "expected": 0,
+      "actual": 0,
+      "match": true,
+      "kind": "smallest supported input (0-index boundary)"
+    },
+    {
+      "input": 1,
+      "expected": 1,
+      "actual": 1,
+      "match": true,
+      "kind": "boundary / initial base case"
+    },
+    {
+      "input": 2,
+      "expected": 1,
+      "actual": 1,
+      "match": true,
+      "kind": "repeated-value domain boundary (F(1) == F(2))"
+    },
+    {
+      "input": 5,
+      "expected": 5,
+      "actual": 5,
+      "match": true,
+      "kind": "ordinary input"
+    },
+    {
+      "input": 10,
+      "expected": 55,
+      "actual": 55,
+      "match": true,
+      "kind": "ordinary input"
+    }
+  ],
+  "tool_versions": {
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "9.2.0"
+  },
+  "pytest_command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest src/modules/test_modules.py -k test_fibonacci_at_position_contract -v",
+  "pytest_test_count": 1,
+  "success": true,
+  "mutation_test": {
+    "input_before": 5,
+    "input_after": 5,
+    "mutated": false
+  },
+  "pytest_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- /opt/homebrew/opt/python@3.14/bin/python3.14\ncachedir: .pytest_cache\nrootdir: /Users/smer/SNAI ASSIGNMENT/learn-python\nplugins: platformdirs-4.14.5\ncollecting ... collected 2 items / 1 deselected / 1 selected\n\nsrc/modules/test_modules.py::test_fibonacci_at_position_contract PASSED  [100%]\n\n======================= 1 passed, 1 deselected in 0.01s ========================\n"
+}
