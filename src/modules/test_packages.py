@@ -59,3 +59,23 @@ def test_packages():
     assert sound_package.effects.echo.echo_function() == 'Do echo effect'
     assert echo.echo_function() == 'Do echo effect'
     assert echo_function() == 'Do echo effect'
+
+
+def test_echo_function_refactoring():
+    """Verify refactored echo_function behavior and contracts.
+
+    Precondition source anchor:
+      src/modules/sound_package/effects/echo.py:12 establishes def echo_function(action, effect)
+
+    Smallest valid input (zero args / defaults):
+      echo_function() == 'Do echo effect'
+
+    Ordinary input:
+      echo_function('Apply', 'echo effect') == 'Apply echo effect'
+    """
+    # Smallest valid input
+    assert echo_function() == 'Do echo effect'
+
+    # Ordinary custom input
+    assert echo_function('Apply', 'echo effect') == 'Apply echo effect'
+
