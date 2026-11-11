@@ -15,12 +15,20 @@ paragraphs describing the object’s calling conventions, its side effects, etc.
 """
 
 
+import inspect
+import sys
+
+
 def do_nothing():
     """Do nothing, but document it.
 
     No, really, it doesn't do anything.
     """
-    pass
+
+
+def greet():
+    """Return greeting message."""
+    return "hello"
 
 
 def test_function_documentation_string():
@@ -36,7 +44,53 @@ def test_function_documentation_string():
     # if they occur all their leading whitespace should be stripped. Equivalence of whitespace
     # should be tested after expansion of tabs (to 8 spaces, normally).
 
-    assert do_nothing.__doc__ == """Do nothing, but document it.
+    # Cleaned docstring invariant (consistent across Python versions via inspect.cleandoc):
+    assert inspect.cleandoc(do_nothing.__doc__) == (
+        "Do nothing, but document it.\n\nNo, really, it doesn't do anything."
+    )
+
+    # In Python 3.13+, docstrings are automatically stripped of common indentation;
+    # in earlier versions, raw docstrings retain the indentation of subsequent lines.
+    if sys.version_info >= (3, 13):
+        assert do_nothing.__doc__ == (
+            "Do nothing, but document it.\n\nNo, really, it doesn't do anything.\n"
+        )
+    else:
+        assert do_nothing.__doc__ == """Do nothing, but document it.
 
     No, really, it doesn't do anything.
     """
+
+    # Neighboring supported input derived independently (single-line docstring):
+    # State: function with single-line docstring
+    # Output: string directly accessible via __doc__ without multiline stripping
+    assert greet.__doc__ == "Return greeting message."
+
+
+def test_docstring_lifecycle_worked_example():
+    """Executable worked example tracing docstring lifecycle:
+    Input -> Raw lines -> Intermediate dedent state -> Final cleaned result.
+    """
+    raw_doc = do_nothing.__doc__
+
+    # Step 1: Input raw docstring inspection
+    assert "Do nothing, but document it." in raw_doc
+
+    # Step 2: Intermediate state - split into lines
+    lines = raw_doc.splitlines()
+    assert len(lines) >= 3
+    summary_line = lines[0].strip()
+    blank_line = lines[1].strip()
+    detail_line = lines[2].strip()
+
+    assert summary_line == "Do nothing, but document it."
+    assert blank_line == ""
+    assert detail_line == "No, really, it doesn't do anything."
+
+    # Step 3: Decisive state transition - inspect.cleandoc removes common indentation
+    cleaned = inspect.cleandoc(raw_doc)
+    assert cleaned.split("\n\n") == [
+        "Do nothing, but document it.",
+        "No, really, it doesn't do anything."
+    ]
+
