@@ -48,3 +48,41 @@ def test_file_methods():
 
     multi_line_file.close()
     binary_file.close()
+
+
+def test_file_seek_read_invariant():
+    """Property test verifying file seek and read position invariant.
+
+    Invariant contract:
+      For any bounded offset k within [0, len(content)-1],
+      f.seek(k) == k and f.read(1) == content[k].
+      Repeated seeks with fresh equivalent offsets yield identical results.
+
+    Source anchors:
+      assert read_data == 'first line\nsecond line\nthird line'
+      assert binary_file.seek(0) == 0
+      assert binary_file.seek(6) == 6
+
+    Neighboring supported inputs:
+      seek(7) -> 7, read(1) -> '7'
+      seek(15) -> 15, read(1) -> 'f'
+    """
+    import random
+
+    known_content = '0123456789abcdef'
+    with open('src/files/binary_file', 'r') as bf:
+        # Neighboring supported inputs:
+        assert bf.seek(7) == 7
+        assert bf.read(1) == '7'
+        assert bf.seek(15) == 15
+        assert bf.read(1) == 'f'
+
+        # Property test over 100 bounded valid cases with deterministic seed
+        rng = random.Random(42)
+        for _ in range(100):
+            offset = rng.randint(0, len(known_content) - 1)
+            seek_pos = bf.seek(offset)
+            assert seek_pos == offset
+            byte_val = bf.read(1)
+            assert byte_val == known_content[offset]
+
