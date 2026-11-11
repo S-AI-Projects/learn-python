@@ -1,0 +1,20 @@
+{
+  "task_id": "R30-T054",
+  "item": "src/files/test_file_methods.py",
+  "tested_function": "test_file_methods",
+  "source_anchors": [
+    "assert read_data == 'first line\\nsecond line\\nthird line'",
+    "assert binary_file.seek(0) == 0",
+    "assert binary_file.seek(6) == 6"
+  ],
+  "property_cases_checked": 100,
+  "deliberate_mutation_caught": true,
+  "tool_versions": {
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "9.2.0"
+  },
+  "pytest_command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest src/files/test_file_methods.py -v",
+  "pytest_test_count": 2,
+  "success": true,
+  "pytest_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- /opt/homebrew/opt/python@3.14/bin/python3.14\ncachedir: .pytest_cache\nrootdir: /Users/smer/SNAI ASSIGNMENT/learn-python\nplugins: platformdirs-4.14.5\ncollecting ... collected 2 items\n\nsrc/files/test_file_methods.py::test_file_methods PASSED                 [ 50%]\nsrc/files/test_file_methods.py::test_file_seek_read_invariant PASSED     [100%]\n\n============================== 2 passed in 0.01s ===============================\n"
+}
