@@ -1,0 +1,53 @@
+{
+  "task_id": "R30-T052",
+  "item": "src/classes/test_class_definition.py",
+  "tested_function": "test_class_definition",
+  "source_anchors": [
+    "assert greeter.say_hello() == 'Hello user'",
+    "assert greeter.say_goodbye() == 'Goodbye user'"
+  ],
+  "boundary_cases": [
+    {
+      "category": "Valid interior (source anchor)",
+      "input": "user",
+      "expected_hello": "Hello user",
+      "actual_hello": "Hello user",
+      "expected_goodbye": "Goodbye user",
+      "actual_goodbye": "Goodbye user",
+      "match": true
+    },
+    {
+      "category": "Neighboring supported input",
+      "input": "guest",
+      "expected_hello": "Hello guest",
+      "actual_hello": "Hello guest",
+      "expected_goodbye": "Goodbye guest",
+      "actual_goodbye": "Goodbye guest",
+      "match": true
+    },
+    {
+      "category": "Smallest boundary (empty string)",
+      "input": "",
+      "expected_hello": "Hello ",
+      "actual_hello": "Hello ",
+      "expected_goodbye": "Goodbye ",
+      "actual_goodbye": "Goodbye ",
+      "match": true
+    },
+    {
+      "category": "Unsupported boundary (non-string)",
+      "input": 123,
+      "expected_exception": "TypeError",
+      "actual_exception": "TypeError",
+      "match": true
+    }
+  ],
+  "tool_versions": {
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "9.2.0"
+  },
+  "pytest_command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest src/classes/test_class_definition.py -v",
+  "pytest_test_count": 1,
+  "success": true,
+  "pytest_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- /opt/homebrew/opt/python@3.14/bin/python3.14\ncachedir: .pytest_cache\nrootdir: /Users/smer/SNAI ASSIGNMENT/learn-python\nplugins: platformdirs-4.14.5\ncollecting ... collected 1 item\n\nsrc/classes/test_class_definition.py::test_class_definition PASSED       [100%]\n\n============================== 1 passed in 0.01s ===============================\n"
+}

@@ -44,3 +44,31 @@ def test_class_definition():
 
     assert greeter.say_hello() == 'Hello user'
     assert greeter.say_goodbye() == 'Goodbye user'
+
+    # Supported Boundary Contract:
+    # -------------------------------------------------------------
+    # Domain category       | Input self.name | say_hello()        | say_goodbye()
+    # -------------------------------------------------------------
+    # Valid interior        | 'user'          | 'Hello user'       | 'Goodbye user'
+    # Neighboring supported | 'guest'         | 'Hello guest'      | 'Goodbye guest'
+    # Smallest boundary     | '' (empty str)  | 'Hello '           | 'Goodbye '
+    # Unsupported boundary  | 123 (non-str)   | raises TypeError   | raises TypeError
+    # -------------------------------------------------------------
+
+    # Neighboring supported input derived independently:
+    greeter.name = 'guest'
+    assert greeter.say_hello() == 'Hello guest'
+    assert greeter.say_goodbye() == 'Goodbye guest'
+
+    # Smallest valid boundary input (empty string):
+    greeter.name = ''
+    assert greeter.say_hello() == 'Hello '
+    assert greeter.say_goodbye() == 'Goodbye '
+
+    # Explicitly unsupported boundary (non-string causes TypeError in string concatenation):
+    greeter.name = 123
+    try:
+        greeter.say_hello()
+        assert False, "Expected TypeError for non-string self.name"
+    except TypeError:
+        pass
