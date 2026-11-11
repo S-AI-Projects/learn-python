@@ -1,0 +1,49 @@
+{
+  "task_id": "R30-T056",
+  "item": "src/modules/sound_package/effects/echo.py",
+  "tested_function": "echo_function",
+  "refactoring_summary": "Extracted string formatting calculation into format_effect_message helper",
+  "preconditions": [
+    {
+      "source_file": "src/modules/sound_package/effects/echo.py",
+      "line": 7,
+      "precondition": "format_effect_message helper definition"
+    },
+    {
+      "source_file": "src/modules/sound_package/effects/echo.py",
+      "line": 12,
+      "precondition": "echo_function signature with default parameters"
+    }
+  ],
+  "cases_checked": [
+    {
+      "type": "smallest_valid_input (defaults)",
+      "call": "echo_function()",
+      "expected": "Do echo effect",
+      "actual": "Do echo effect",
+      "match": true
+    },
+    {
+      "type": "ordinary_input",
+      "call": "echo_function('Apply', 'echo effect')",
+      "expected": "Apply echo effect",
+      "actual": "Apply echo effect",
+      "match": true
+    },
+    {
+      "type": "helper_contract",
+      "call": "format_effect_message('Test', 'reverb')",
+      "expected": "Test reverb",
+      "actual": "Test reverb",
+      "match": true
+    }
+  ],
+  "tool_versions": {
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "9.2.0"
+  },
+  "pytest_command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest src/modules/test_packages.py -k test_echo_function_refactoring -v",
+  "pytest_test_count": 1,
+  "success": true,
+  "pytest_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- /opt/homebrew/opt/python@3.14/bin/python3.14\ncachedir: .pytest_cache\nrootdir: /Users/smer/SNAI ASSIGNMENT/learn-python\nplugins: platformdirs-4.14.5\ncollecting ... collected 2 items / 1 deselected / 1 selected\n\nsrc/modules/test_packages.py::test_echo_function_refactoring PASSED      [100%]\n\n======================= 1 passed, 1 deselected in 0.01s ========================\n"
+}
