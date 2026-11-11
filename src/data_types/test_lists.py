@@ -30,6 +30,22 @@ def test_list_type():
     assert squares[-1] == 25
     assert squares[-3:] == [9, 16, 25]  # slicing returns a new list
 
+    # Neighboring supported input derived independently:
+    assert squares[2] == 9
+    assert squares[1:3] == [4, 9]
+
+    # Documented failure branch (Python sequence indexing raises IndexError out-of-bounds):
+    with pytest.raises(IndexError):
+        _ = squares[len(squares)]  # Smallest out-of-bounds index reaching the IndexError branch
+
+    # Valid absent-result / empty-result branch (slicing beyond range yields empty list without error):
+    assert squares[10:20] == []
+
+    # Verify caller-owned state remains valid and unmodified after failure branch:
+    assert isinstance(squares, list)
+    assert squares == [1, 4, 9, 16, 25]
+    assert squares[0] == 1  # Ordinary valid call succeeds after failure handling
+
     # All slice operations return a new list containing the requested elements.
     # This means that the following slice returns a new (shallow) copy of
     # the list:

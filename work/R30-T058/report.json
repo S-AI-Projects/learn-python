@@ -1,0 +1,27 @@
+{
+  "task_id": "R30-T058",
+  "item": "src/data_types/test_lists.py",
+  "tested_function": "test_list_type",
+  "source_anchors": [
+    "assert isinstance(squares, list)",
+    "assert squares[0] == 1",
+    "assert squares[-1] == 25"
+  ],
+  "failure_branch": {
+    "mechanism": "IndexError on out-of-range index access",
+    "reached": true,
+    "state_preserved": true
+  },
+  "empty_result_branch": {
+    "mechanism": "Slice beyond list length yields empty list []",
+    "reached": true
+  },
+  "tool_versions": {
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "9.2.0"
+  },
+  "pytest_command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest src/data_types/test_lists.py -k test_list_type -v",
+  "pytest_test_count": 1,
+  "success": true,
+  "pytest_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- /opt/homebrew/opt/python@3.14/bin/python3.14\ncachedir: .pytest_cache\nrootdir: /Users/smer/SNAI ASSIGNMENT/learn-python\nplugins: platformdirs-4.14.5\ncollecting ... collected 5 items / 4 deselected / 1 selected\n\nsrc/data_types/test_lists.py::test_list_type PASSED                      [100%]\n\n======================= 1 passed, 4 deselected in 0.02s ========================\n"
+}
