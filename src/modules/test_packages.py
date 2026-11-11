@@ -59,3 +59,29 @@ def test_packages():
     assert sound_package.effects.echo.echo_function() == 'Do echo effect'
     assert echo.echo_function() == 'Do echo effect'
     assert echo_function() == 'Do echo effect'
+
+
+def test_effects_init_complexity():
+    """Regression test for sound_package.effects package initialization and helpers.
+
+    Precondition line:
+      src/modules/sound_package/effects/__init__.py:17 establishes def list_effects(effects=None)
+
+    Smallest valid input:
+      list_effects([]) == []
+
+    Ordinary input:
+      list_effects(['echo', 'reverb', 'surround']) == ['echo', 'reverb', 'surround']
+    """
+    from sound_package.effects import list_effects, AVAILABLE_EFFECTS
+
+    # Package defaults
+    assert AVAILABLE_EFFECTS == ['echo']
+    assert list_effects() == ['echo']
+
+    # Smallest valid input (empty collection)
+    assert list_effects([]) == []
+
+    # Ordinary input (multi-element list)
+    assert list_effects(['echo', 'reverb', 'surround']) == ['echo', 'reverb', 'surround']
+

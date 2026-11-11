@@ -1,0 +1,109 @@
+{
+  "task_id": "R30-T059",
+  "item": "src/modules/sound_package/effects/__init__.py",
+  "tested_component": "__init__.py: list_effects",
+  "complexity_specification": {
+    "input_size_variable": "N = len(effects)",
+    "theoretical_time_complexity": "O(N) linear time",
+    "theoretical_space_complexity": "O(N) linear space",
+    "distinction": "Theoretical claim is worst-case O(N) due to single-pass list comprehension; empirical measurements reflect interpreter execution timing."
+  },
+  "preconditions": [
+    {
+      "file": "src/modules/sound_package/effects/__init__.py",
+      "line": 11,
+      "precondition": "AVAILABLE_EFFECTS = ['echo'] defines default package exports"
+    },
+    {
+      "file": "src/modules/sound_package/effects/__init__.py",
+      "line": 17,
+      "precondition": "def list_effects(effects=None) provides effect listing interface"
+    }
+  ],
+  "fixture_checks": [
+    {
+      "case": "smallest_valid_input",
+      "input": [],
+      "expected": [],
+      "actual": [],
+      "match": true
+    },
+    {
+      "case": "ordinary_input",
+      "input": [
+        "echo",
+        "reverb",
+        "surround"
+      ],
+      "expected": [
+        "echo",
+        "reverb",
+        "surround"
+      ],
+      "actual": [
+        "echo",
+        "reverb",
+        "surround"
+      ],
+      "match": true
+    }
+  ],
+  "scaling_measurements": [
+    {
+      "input_size_N": 10,
+      "repetitions": 5,
+      "durations_ns": [
+        167,
+        167,
+        250,
+        375,
+        417
+      ],
+      "median_ns": 250,
+      "range_ns": {
+        "min_ns": 167,
+        "max_ns": 417
+      }
+    },
+    {
+      "input_size_N": 100,
+      "repetitions": 5,
+      "durations_ns": [
+        958,
+        1042,
+        1083,
+        1084,
+        1208
+      ],
+      "median_ns": 1083,
+      "range_ns": {
+        "min_ns": 958,
+        "max_ns": 1208
+      }
+    },
+    {
+      "input_size_N": 1000,
+      "repetitions": 5,
+      "durations_ns": [
+        8334,
+        8416,
+        8417,
+        9084,
+        9333
+      ],
+      "median_ns": 8417,
+      "range_ns": {
+        "min_ns": 8334,
+        "max_ns": 9333
+      }
+    }
+  ],
+  "tool_versions": {
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "9.2.0"
+  },
+  "pytest_command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -m pytest src/modules/test_packages.py -k test_effects_init_complexity -v",
+  "pytest_test_count": 1,
+  "success": true,
+  "pytest_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- /opt/homebrew/opt/python@3.14/bin/python3.14\ncachedir: .pytest_cache\nrootdir: /Users/smer/SNAI ASSIGNMENT/learn-python\nplugins: platformdirs-4.14.5\ncollecting ... collected 2 items / 1 deselected / 1 selected\n\nsrc/modules/test_packages.py::test_effects_init_complexity PASSED        [100%]\n\n======================= 1 passed, 1 deselected in 0.01s ========================\n"
+}
