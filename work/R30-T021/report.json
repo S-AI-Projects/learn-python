@@ -1,0 +1,137 @@
+{
+  "task_id": "R30-T021",
+  "item": "src/exceptions/test_handle_exceptions.py",
+  "tested_function": "test_handle_exceptions",
+  "source_anchors": [
+    "assert result",
+    "assert exception_has_been_handled",
+    "assert result"
+  ],
+  "baseline_analysis": {
+    "public_inputs": "None (test function takes 0 arguments)",
+    "result": "None",
+    "mutation_behavior": "Local variables only; no observable module or global mutation",
+    "external_dependencies": "Built-in exceptions (ZeroDivisionError, NameError)",
+    "baseline_mismatches": "1. Line 97 comment incorrectly claimed '# We should not get here at all.' inside try block where result = 10 raises no exception.\n2. Line 101 comment under except NameError erroneously stated '# We should get here because of division by zero.'\n3. Assertions (assert result, assert exception_has_been_handled) tested bare truthiness instead of explicit expected values."
+  },
+  "tool_versions": {
+    "python": "3.15.2 (v3.15.2:5e58eaad7c5, Oct 25 2026, 14:19:34) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "9.2.0",
+    "flake8": "7.5.0"
+  },
+  "return_value_check": {
+    "expected": null,
+    "actual": null,
+    "match": true
+  },
+  "mutation_check": {
+    "attributes_before_count": 10,
+    "attributes_after_count": 10,
+    "mutated": false
+  },
+  "fixture_checks": [
+    {
+      "category": "Source Anchor (Exception Path)",
+      "input": "10 * (1 / 0)",
+      "expected_result": null,
+      "actual_result": null,
+      "expected_handled": true,
+      "actual_handled": true,
+      "expected_else_fired": false,
+      "actual_else_fired": false,
+      "match": true
+    },
+    {
+      "category": "Source Anchor (Clean Path)",
+      "input": "result = 10",
+      "expected_result": 10,
+      "actual_result": 10.0,
+      "expected_handled": false,
+      "actual_handled": false,
+      "expected_else_fired": true,
+      "actual_else_fired": true,
+      "match": true
+    },
+    {
+      "category": "Neighboring supported input (derived independently)",
+      "input": "10 * (1 / 1)",
+      "expected_result": 10.0,
+      "actual_result": 10.0,
+      "expected_handled": false,
+      "actual_handled": false,
+      "expected_else_fired": true,
+      "actual_else_fired": true,
+      "match": true
+    },
+    {
+      "category": "Ordinary input",
+      "input": "10 * (1 / 2)",
+      "expected_result": 5.0,
+      "actual_result": 5.0,
+      "expected_handled": false,
+      "actual_handled": false,
+      "expected_else_fired": true,
+      "actual_else_fired": true,
+      "match": true
+    },
+    {
+      "category": "Smallest supported input (validating content over truthiness)",
+      "input": "0 * (1 / 1)",
+      "expected_result": 0.0,
+      "actual_result": 0.0,
+      "expected_handled": false,
+      "actual_handled": false,
+      "expected_else_fired": true,
+      "actual_else_fired": true,
+      "match": true
+    },
+    {
+      "category": "Repeated-value / equivalent domain boundary (Pass 1)",
+      "input": "10 * (1 / 2)",
+      "expected_result": 5.0,
+      "actual_result": 5.0,
+      "expected_handled": false,
+      "actual_handled": false,
+      "expected_else_fired": true,
+      "actual_else_fired": true,
+      "match": true
+    },
+    {
+      "category": "Repeated-value / equivalent domain boundary (Pass 2)",
+      "input": "10 * (1 / 2)",
+      "expected_result": 5.0,
+      "actual_result": 5.0,
+      "expected_handled": false,
+      "actual_handled": false,
+      "expected_else_fired": true,
+      "actual_else_fired": true,
+      "match": true
+    },
+    {
+      "category": "Repeated exception boundary (Pass 1)",
+      "input": "10 * (1 / 0)",
+      "expected_result": null,
+      "actual_result": null,
+      "expected_handled": true,
+      "actual_handled": true,
+      "expected_else_fired": false,
+      "actual_else_fired": false,
+      "match": true
+    },
+    {
+      "category": "Repeated exception boundary (Pass 2)",
+      "input": "10 * (1 / 0)",
+      "expected_result": null,
+      "actual_result": null,
+      "expected_handled": true,
+      "actual_handled": true,
+      "expected_else_fired": false,
+      "actual_else_fired": false,
+      "match": true
+    }
+  ],
+  "pytest_command": "/Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest src/exceptions/test_handle_exceptions.py -v",
+  "pytest_test_count": 2,
+  "success": true,
+  "pytest_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3\ncachedir: .pytest_cache\nrootdir: /Users/prishapandya_25/Projects/learn-python\ncollecting ... collected 2 items\n\nsrc/exceptions/test_handle_exceptions.py::test_handle_exceptions PASSED  [ 50%]\nsrc/exceptions/test_handle_exceptions.py::test_handle_exceptions_regression PASSED [100%]\n\n============================== 2 passed in 0.02s ===============================\n"
+}
