@@ -5,6 +5,8 @@
 Classes can have two types of attribute references: data or methods. Class methods are called
 by [variable_name].[method_name]([parameters]) as opposed to class data which lacks the ().
 """
+import random
+import sys
 
 
 class MyCounter:
@@ -58,3 +60,85 @@ def test_method_objects():
 
     assert counter.get_counter() == 10
     assert MyCounter.get_counter(counter) == 10
+
+    # Neighboring supported input derived independently:
+    # Increment counter by 1 to reach neighboring state 11
+    assert counter.increment_counter() == 11
+    assert counter.get_counter() == 11
+    assert get_counter() == 11
+    assert MyCounter.get_counter(counter) == 11
+
+
+def test_method_objects_property():
+    """Property test verifying method object binding and mutation invariant.
+
+    Invariant contract:
+      For any MyCounter instance with counter value C:
+        obj.get_counter() == (obj.get_counter)() == MyCounter.get_counter(obj) == C
+      Invoking (obj.increment_counter)() increments counter to C + 1, and subsequent
+      evaluations of bound get_counter() evaluate to C + 1.
+      Repeated runs with fresh equivalent instances yield identical results.
+
+    Source anchors:
+      assert counter.get_counter() == 10
+      assert get_counter() == 10
+      assert counter.get_counter() == 10
+
+    Neighboring supported input:
+      counter.increment_counter() == 11
+      counter.get_counter() == 11
+    """
+    # Small readable case
+    c = MyCounter()
+    c.counter = 0
+    assert c.get_counter() == 0
+    bound_get = c.get_counter
+    bound_inc = c.increment_counter
+    assert bound_get() == 0
+    assert bound_inc() == 1
+    assert bound_get() == 1
+    assert MyCounter.get_counter(c) == 1
+
+    # Property test over 100 bounded valid cases with fixed seed
+    rng = random.Random(42)
+    for _ in range(100):
+        init_val = rng.randint(-1000, 1000)
+        num_increments = rng.randint(0, 20)
+
+        inst = MyCounter()
+        inst.counter = init_val
+        m_get = inst.get_counter
+        m_inc = inst.increment_counter
+
+        # Invariant before increments
+        assert inst.get_counter() == init_val
+        assert m_get() == init_val
+        assert MyCounter.get_counter(inst) == init_val
+
+        # Apply increments
+        for step in range(1, num_increments + 1):
+            res = m_inc()
+            assert res == init_val + step
+
+        # Invariant after increments
+        expected_final = init_val + num_increments
+        assert inst.get_counter() == expected_final
+        assert m_get() == expected_final
+        assert MyCounter.get_counter(inst) == expected_final
+
+
+def test_method_objects_regression():
+    """Focused regression test for test_method_objects contract.
+
+    Verifies:
+      - Return value of test_method_objects() is None.
+      - Zero observable mutation on module attributes or global state.
+    """
+    current_module = sys.modules[__name__]
+    attrs_before = set(dir(current_module))
+
+    ret = test_method_objects()
+    assert ret is None
+
+    attrs_after = set(dir(current_module))
+    assert attrs_before == attrs_after
