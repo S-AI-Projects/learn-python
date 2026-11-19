@@ -1,0 +1,98 @@
+{
+  "task_id": "R30-T024",
+  "item": "src/classes/test_method_objects.py",
+  "tested_function": "test_method_objects",
+  "source_anchors": [
+    "assert counter.get_counter() == 10",
+    "assert get_counter() == 10",
+    "assert counter.get_counter() == 10"
+  ],
+  "invariant_contract": "Binding equivalence and mutation contract: For any MyCounter instance obj with value C, obj.get_counter() == (obj.get_counter)() == MyCounter.get_counter(obj) == C. Invoking (obj.increment_counter)() increments counter by 1, and subsequent bound calls evaluate to C + 1 consistently across independent instances.",
+  "baseline_analysis": {
+    "public_inputs": "None (test function takes 0 arguments)",
+    "result": "None",
+    "mutation_behavior": "Local instance mutations; no observable module-level attribute mutation",
+    "external_dependencies": "None (standard Python class and method binding semantics)"
+  },
+  "tool_versions": {
+    "python": "3.15.2 (v3.15.2:5e58eaad7c5, Oct 25 2026, 14:19:34) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "9.2.0",
+    "flake8": "7.5.0"
+  },
+  "return_value_check": {
+    "expected": null,
+    "actual": null,
+    "match": true
+  },
+  "mutation_check": {
+    "attributes_before_count": 13,
+    "attributes_after_count": 13,
+    "mutated": false
+  },
+  "neighboring_input_check": {
+    "initial_value": 10,
+    "increment_result": 11,
+    "post_increment_value": 11,
+    "expected": 11,
+    "match": true
+  },
+  "property_sample_cases": [
+    {
+      "case_index": 0,
+      "initial_value": 309,
+      "increments": 3,
+      "expected_final": 312,
+      "actual_final": 312,
+      "match": true
+    },
+    {
+      "case_index": 1,
+      "initial_value": -949,
+      "increments": 8,
+      "expected_final": -941,
+      "actual_final": -941,
+      "match": true
+    },
+    {
+      "case_index": 2,
+      "initial_value": -499,
+      "increments": 7,
+      "expected_final": -492,
+      "actual_final": -492,
+      "match": true
+    },
+    {
+      "case_index": 3,
+      "initial_value": -715,
+      "increments": 3,
+      "expected_final": -712,
+      "actual_final": -712,
+      "match": true
+    },
+    {
+      "case_index": 4,
+      "initial_value": 385,
+      "increments": 17,
+      "expected_final": 402,
+      "actual_final": 402,
+      "match": true
+    },
+    {
+      "case_index": 99,
+      "initial_value": 881,
+      "increments": 0,
+      "expected_final": 881,
+      "actual_final": 881,
+      "match": true
+    }
+  ],
+  "property_cases_total": 100,
+  "deliberate_failure_check": {
+    "broken_invariant_tested": "broken_bound_method() != broken_instance.get_counter()",
+    "assertion_failed_as_expected": true
+  },
+  "pytest_command": "/Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest src/classes/test_method_objects.py -v",
+  "pytest_test_count": 3,
+  "success": true,
+  "pytest_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3\ncachedir: .pytest_cache\nrootdir: /Users/prishapandya_25/Projects/learn-python\ncollecting ... collected 3 items\n\nsrc/classes/test_method_objects.py::test_method_objects PASSED           [ 33%]\nsrc/classes/test_method_objects.py::test_method_objects_property PASSED  [ 66%]\nsrc/classes/test_method_objects.py::test_method_objects_regression PASSED [100%]\n\n============================== 3 passed in 0.02s ===============================\n"
+}
