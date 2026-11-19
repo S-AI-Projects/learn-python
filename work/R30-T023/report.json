@@ -1,0 +1,205 @@
+{
+  "task_id": "R30-T023",
+  "item": "src/files/test_file_reading.py",
+  "tested_function": "test_files_open",
+  "source_anchors": [
+    "assert not file.closed",
+    "assert read_data == ('first line\\n' 'second line\\n' 'third line')",
+    "assert file.closed"
+  ],
+  "oracle_method": "Independent reviewed ground-truth lookup table mapping 23 read sizes (0..20, 33, 50) derived directly from the file specification, verified against fresh file streams without invoking the function under test.",
+  "baseline_analysis": {
+    "public_inputs": "None (test function takes 0 arguments)",
+    "result": "None",
+    "mutation_behavior": "Mutates local variable read_data and stream state (file.closed transitions from False to True). No persistent on-disk mutation to multi_line_file.txt and zero module-level attribute mutation.",
+    "external_dependencies": "Filesystem access to src/files/multi_line_file.txt and src/files/binary_file"
+  },
+  "tool_versions": {
+    "python": "3.15.2 (v3.15.2:5e58eaad7c5, Oct 25 2026, 14:19:34) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "9.2.0",
+    "flake8": "7.5.0"
+  },
+  "return_value_check": {
+    "expected": null,
+    "actual": null,
+    "match": true
+  },
+  "mutation_check": {
+    "module_mutated": false,
+    "disk_file_mutated": false,
+    "file_sha256": "7e30068370e3cff508e3157d413b5efd1b279f188f9274b2ad4bc6ee5eb3d2ff"
+  },
+  "oracle_checks": [
+    {
+      "read_size": 0,
+      "expected": "",
+      "actual": "",
+      "match": true
+    },
+    {
+      "read_size": 1,
+      "expected": "f",
+      "actual": "f",
+      "match": true
+    },
+    {
+      "read_size": 2,
+      "expected": "fi",
+      "actual": "fi",
+      "match": true
+    },
+    {
+      "read_size": 3,
+      "expected": "fir",
+      "actual": "fir",
+      "match": true
+    },
+    {
+      "read_size": 4,
+      "expected": "firs",
+      "actual": "firs",
+      "match": true
+    },
+    {
+      "read_size": 5,
+      "expected": "first",
+      "actual": "first",
+      "match": true
+    },
+    {
+      "read_size": 6,
+      "expected": "first ",
+      "actual": "first ",
+      "match": true
+    },
+    {
+      "read_size": 7,
+      "expected": "first l",
+      "actual": "first l",
+      "match": true
+    },
+    {
+      "read_size": 8,
+      "expected": "first li",
+      "actual": "first li",
+      "match": true
+    },
+    {
+      "read_size": 9,
+      "expected": "first lin",
+      "actual": "first lin",
+      "match": true
+    },
+    {
+      "read_size": 10,
+      "expected": "first line",
+      "actual": "first line",
+      "match": true
+    },
+    {
+      "read_size": 11,
+      "expected": "first line\n",
+      "actual": "first line\n",
+      "match": true
+    },
+    {
+      "read_size": 12,
+      "expected": "first line\ns",
+      "actual": "first line\ns",
+      "match": true
+    },
+    {
+      "read_size": 13,
+      "expected": "first line\nse",
+      "actual": "first line\nse",
+      "match": true
+    },
+    {
+      "read_size": 14,
+      "expected": "first line\nsec",
+      "actual": "first line\nsec",
+      "match": true
+    },
+    {
+      "read_size": 15,
+      "expected": "first line\nseco",
+      "actual": "first line\nseco",
+      "match": true
+    },
+    {
+      "read_size": 16,
+      "expected": "first line\nsecon",
+      "actual": "first line\nsecon",
+      "match": true
+    },
+    {
+      "read_size": 17,
+      "expected": "first line\nsecond",
+      "actual": "first line\nsecond",
+      "match": true
+    },
+    {
+      "read_size": 18,
+      "expected": "first line\nsecond ",
+      "actual": "first line\nsecond ",
+      "match": true
+    },
+    {
+      "read_size": 19,
+      "expected": "first line\nsecond l",
+      "actual": "first line\nsecond l",
+      "match": true
+    },
+    {
+      "read_size": 20,
+      "expected": "first line\nsecond li",
+      "actual": "first line\nsecond li",
+      "match": true
+    },
+    {
+      "read_size": 33,
+      "expected": "first line\nsecond line\nthird line",
+      "actual": "first line\nsecond line\nthird line",
+      "match": true
+    },
+    {
+      "read_size": 50,
+      "expected": "first line\nsecond line\nthird line",
+      "actual": "first line\nsecond line\nthird line",
+      "match": true
+    }
+  ],
+  "repeated_run_checks": [
+    {
+      "run_index": 1,
+      "input_size": 5,
+      "expected": "first",
+      "actual": "first",
+      "match": true
+    },
+    {
+      "run_index": 2,
+      "input_size": 5,
+      "expected": "first",
+      "actual": "first",
+      "match": true
+    },
+    {
+      "run_index": 3,
+      "input_size": 5,
+      "expected": "first",
+      "actual": "first",
+      "match": true
+    }
+  ],
+  "neighboring_input_check": {
+    "file": "src/files/binary_file",
+    "expected": "0123456789abcdef",
+    "actual": "0123456789abcdef",
+    "match": true
+  },
+  "pytest_command": "/Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest src/files/test_file_reading.py -v",
+  "pytest_test_count": 2,
+  "success": true,
+  "pytest_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3\ncachedir: .pytest_cache\nrootdir: /Users/prishapandya_25/Projects/learn-python\ncollecting ... collected 2 items\n\nsrc/files/test_file_reading.py::test_files_open PASSED                   [ 50%]\nsrc/files/test_file_reading.py::test_file_reading_oracle_comparison PASSED [100%]\n\n============================== 2 passed in 0.02s ===============================\n"
+}
