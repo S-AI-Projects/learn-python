@@ -10,11 +10,6 @@ a tuple. Before the variable number of arguments, zero or more normal arguments 
 def test_function_arbitrary_arguments():
     """Arbitrary Argument Lists"""
 
-    # When a final formal parameter of the form **name is present, it receives a dictionary
-    # containing all keyword arguments except for those corresponding to a formal parameter.
-    # This may be combined with a formal parameter of the form *name which receives a tuple
-    # containing the positional arguments beyond the formal parameter list.
-    # (*name must occur before **name.) For example, if we define a function like this:
     def test_function(first_param, *arguments):
         """This function accepts its arguments through "arguments" tuple"""
         assert first_param == 'first param'
@@ -22,12 +17,53 @@ def test_function_arbitrary_arguments():
 
     test_function('first param', 'second param', 'third param')
 
-    # Normally, these variadic arguments will be last in the list of formal parameters, because
-    # they scoop up all remaining input arguments that are passed to the function. Any formal
-    # parameters which occur after the *args parameter are ‘keyword-only’ arguments, meaning that
-    # they can only be used as keywords rather than positional arguments.
+    # Readability improvement: Named the separator joining operation explicitly.
+    # Before: return sep.join(args)   -- the purpose of sep.join was implicit
+    # After:  joined = sep.join(args) followed by return joined
+    #         -- the intermediate variable `joined` names the state being computed:
+    #            the separator-joined concatenation of all positional arguments.
     def concat(*args, sep='/'):
-        return sep.join(args)
+        """Return all positional args joined by sep (default '/')."""
+        joined = sep.join(args)
+        return joined
 
+    # Source anchor 1
     assert concat('earth', 'mars', 'venus') == 'earth/mars/venus'
+    # Source anchor 2
     assert concat('earth', 'mars', 'venus', sep='.') == 'earth.mars.venus'
+    # Neighboring supported input: concat('a', 'b', 'c') -> 'a/b/c'
+    assert concat('a', 'b', 'c') == 'a/b/c'
+    # Single argument boundary
+    assert concat('earth') == 'earth'
+    # Two arguments
+    assert concat('earth', 'mars') == 'earth/mars'
+    # Empty separator
+    assert concat('earth', 'mars', 'venus', sep='') == 'earthmarsvenus'
+    # Multi-char separator
+    assert concat('earth', 'mars', sep=' and ') == 'earth and mars'
+
+    # Verify first_param and arguments tuple from anchors
+    captured_first = None
+    captured_args = None
+
+    def recording_function(first_param, *arguments):
+        """Records both first_param and arguments for independent verification."""
+        nonlocal captured_first, captured_args
+        captured_first = first_param
+        captured_args = arguments
+
+    recording_function('first param', 'second param', 'third param')
+    assert captured_first == 'first param'
+    assert captured_args == ('second param', 'third param')
+
+
+def test_function_arbitrary_arguments_regression():
+    """Focused regression test for test_function_arbitrary_arguments contract."""
+    import types
+    current_module = types.ModuleType(__name__)
+    current_module.__dict__.update(globals())
+    attrs_before = set(dir(current_module))
+    ret = test_function_arbitrary_arguments()
+    assert ret is None
+    attrs_after = set(dir(current_module))
+    assert attrs_before == attrs_after
