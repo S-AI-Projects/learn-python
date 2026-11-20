@@ -1,0 +1,74 @@
+{
+  "task_id": "R30-T025",
+  "item": "src/exceptions/test_handle_exceptions.py",
+  "tested_function": "test_handle_exceptions",
+  "source_anchors": [
+    "assert result",
+    "assert exception_has_been_handled",
+    "assert result"
+  ],
+  "dependency_analysis": {
+    "external_dependencies_present": false,
+    "statement": "Pure exception handling construct. No observable external dependencies exist (no network, database, filesystem, system clock, randomness, or GUI).",
+    "network_required": false,
+    "user_account_required": false,
+    "gui_required": false,
+    "dependency_parameter": "env",
+    "default_value": "None",
+    "preserves_callers": true
+  },
+  "baseline_analysis": {
+    "public_inputs": "None or env=None (optional dependency parameter)",
+    "result": "None",
+    "mutation_behavior": "Local variables only; no observable module or global mutation"
+  },
+  "tool_versions": {
+    "python": "3.15.2 (v3.15.2:5e58eaad7c5, Oct 25 2026, 14:19:34) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "pytest": "9.2.0",
+    "flake8": "7.5.0"
+  },
+  "return_value_check": {
+    "expected": null,
+    "actual": null,
+    "match": true
+  },
+  "mutation_check": {
+    "attributes_before_count": 10,
+    "attributes_after_count": 10,
+    "mutated": false
+  },
+  "isolation_runs": [
+    {
+      "run": 1,
+      "state": "fresh isolated state (run 1)",
+      "return_value": null,
+      "match": true
+    },
+    {
+      "run": 2,
+      "state": "fresh isolated state (run 2)",
+      "return_value": null,
+      "match": true
+    },
+    {
+      "run": 3,
+      "state": "after other valid input (10 * (1 / 2))",
+      "return_value": null,
+      "match": true
+    }
+  ],
+  "neighboring_input_check": {
+    "input": "10 * (1 / 1)",
+    "expected_result": 10.0,
+    "actual_result": 10.0,
+    "expected_handled": false,
+    "actual_handled": false,
+    "expected_else": true,
+    "actual_else": true,
+    "match": true
+  },
+  "pytest_command": "/Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest src/exceptions/test_handle_exceptions.py -v",
+  "pytest_test_count": 2,
+  "success": true,
+  "pytest_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3\ncachedir: .pytest_cache\nrootdir: /Users/prishapandya_25/Projects/learn-python\ncollecting ... collected 2 items\n\nsrc/exceptions/test_handle_exceptions.py::test_handle_exceptions PASSED  [ 50%]\nsrc/exceptions/test_handle_exceptions.py::test_handle_exceptions_state_isolation PASSED [100%]\n\n============================== 2 passed in 0.02s ===============================\n"
+}
