@@ -1,0 +1,48 @@
+{
+  "return_value": "None",
+  "regression_return_value": "None",
+  "anchor1": {
+    "input": "b'witch which has which witches wrist watch'",
+    "check": "len(string)",
+    "expected": 41,
+    "actual": 41
+  },
+  "anchor2": {
+    "check": "len(zlib.compress(string))",
+    "expected": 37,
+    "actual": 37
+  },
+  "anchor3": {
+    "check": "zlib.decompress(compressed)",
+    "expected": "b'witch which has which witches wrist watch'",
+    "actual": "b'witch which has which witches wrist watch'"
+  },
+  "crc32": {
+    "expected": 226805979,
+    "actual": 226805979
+  },
+  "neighboring_input": {
+    "input": "b'hello hello hello'",
+    "len_input": 17,
+    "expected_len_input": 17,
+    "len_compressed": 16,
+    "expected_len_compressed": 16,
+    "decompressed_matches": true,
+    "crc32": 3858335872,
+    "expected_crc32": 3858335872
+  },
+  "compression_reduces_size": {
+    "input_len": 41,
+    "compressed_len": 37,
+    "reduced": true
+  },
+  "module_attrs_mutated": [],
+  "pytest_stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3\ncachedir: .pytest_cache\nrootdir: /Users/prishapandya_25/Projects/learn-python\ncollecting ... collected 2 items\n\nsrc/standard_libraries/test_zlib.py::test_zlib PASSED                    [ 50%]\nsrc/standard_libraries/test_zlib.py::test_zlib_regression PASSED         [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "pytest_stderr": "",
+  "pytest_returncode": 0,
+  "pytest_test_count": 2,
+  "python_version": "Python 3.15.2",
+  "pytest_version": "pytest 9.2.0",
+  "failures": [],
+  "passed": true
+}
