@@ -1,0 +1,29 @@
+R30-T046 arithmetic focused refactor
+=====================================
+Contract: integer operands; addition, subtraction, and multiplication return the expected integer values. The test module has no external I/O or dependencies.
+Fixture operands: (5, 3); independently expected outputs: (8, 2, 15).
+Neighbor operands: (6, 3); independently expected outputs: (9, 3, 18).
+Refactor: name the shared operand pair in test_arithmetic_operators; the three operations and all expected values remain unchanged.
+Baseline before refactor: 2 tests passed; fixture and neighbor expected/actual outputs matched.
+
+Requested command: python3 work/R30-T046/check.py
+Focused pytest command: /Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest -s -v src/operators/test_arithmetic.py
+Python: Python 3.15.2
+Pytest: pytest 9.2.0
+Nonzero test count: 2
+Exit code: 0
+
+Focused test output (includes expected and actual values):
+============================= test session starts ==============================
+platform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/rohitkshirsagar/snai tasks/learn-python
+plugins: anyio-4.16.0
+collecting ... collected 2 items
+
+src/operators/test_arithmetic.py::test_arithmetic_operators PASSED
+src/operators/test_arithmetic.py::test_basic_arithmetic_fixture_and_neighbor operands=(5, 3): expected=(8, 2, 15), actual=(8, 2, 15)
+operands=(6, 3): expected=(9, 3, 18), actual=(9, 3, 18)
+PASSED
+
+============================== 2 passed in 0.01s ===============================
