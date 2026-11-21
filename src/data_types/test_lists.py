@@ -75,6 +75,28 @@ def test_list_type():
     assert mixed_list[0][1] == 'b'
 
 
+def test_list_indexing_neighboring_input():
+    """Protect final-item indexing for a neighboring list length."""
+    expected = (1, 36)
+    actual_runs = []
+
+    for _ in range(2):
+        # A fresh equivalent fixture ensures the result does not depend on prior state.
+        squares = [1, 4, 9, 16, 25, 36]
+        actual = (squares[0], squares[-1])
+        print(
+            'neighbor squares={!r}: expected={!r}, actual={!r}'.format(
+                squares,
+                expected,
+                actual,
+            )
+        )
+        assert actual == expected
+        actual_runs.append(actual)
+
+    assert actual_runs == [(1, 36), (1, 36)]
+
+
 def test_list_methods():
     """Test list methods."""
 
