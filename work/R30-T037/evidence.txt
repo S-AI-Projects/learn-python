@@ -1,0 +1,32 @@
+R30-T037 test_multiple_inheritance worked example check
+=======================================================
+Source contract anchors in src/classes/test_multiple_inheritance.py:
+- line 67: assert calendar_clock.get_date() == '12/08/2018'
+- line 68: assert calendar_clock.get_time() == '11:23 PM'
+
+MRO Dispatch & Worked Example:
+- Method Resolution Order verified: ['CalendarClock', 'Clock', 'Calendar', 'object'].
+- Decisive transition: lookup linearly resolves get_time in Clock and get_date in Calendar.
+- Documentation outputs executed and verified: '12/08/2018' and '11:23 PM'.
+- Neighboring input verified: '12/09/2018' and '11:24 PM'.
+
+Requested command: python3 work/R30-T037/check.py
+Focused pytest command: /Library/Frameworks/Python.framework/Versions/3.14/bin/python3 -m pytest -s -v src/classes/test_multiple_inheritance.py
+Python: Python 3.14.7
+Pytest: pytest 9.2.0
+Nonzero test count: 2
+Exit code: 0
+
+Focused test output:
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.14/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/shivamsourav/Ai-Project
+collecting ... collected 2 items
+
+src/classes/test_multiple_inheritance.py::test_multiple_inheritance PASSED
+src/classes/test_multiple_inheritance.py::test_multiple_inheritance_worked_example Documentation example outputs: date='12/08/2018', time='11:23 PM'
+Neighboring inputs: date='12/09/2018', time='11:24 PM'
+PASSED
+
+============================== 2 passed in 0.01s ===============================
