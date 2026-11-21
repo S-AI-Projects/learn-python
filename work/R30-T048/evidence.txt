@@ -1,0 +1,32 @@
+R30-T048 class-object empty-state check
+=======================================
+Source path: test_class_objects defines ComplexNumber at line 26, with class attributes real=0 and imaginary=0 at lines 29-30. It changes real to 10 at line 56; the no-argument construction at line 68 reaches the empty-instance path because the class has no __init__.
+Expected empty instance dictionary: {}. Expected class-fallback values: real=10 and imaginary=0. The assertions verify the instance dictionary stays empty after attribute reads and the class value remains 10. This total, valid path raises no exception.
+The subsequent constructor call uses (3.0, -4.5) and expects the same tuple of instance values, demonstrating a successful call after the empty-state case. The constructor assertion now checks both fields (the previous comma-separated assert checked only truthiness of real).
+There is no network, filesystem, GUI, or external dependency.
+
+Baseline before explanatory comments and assertion correction: 1 focused test passed with the added empty-state assertions.
+
+Requested command: python3 work/R30-T048/check.py
+Focused pytest command: /Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest -s -v src/classes/test_class_objects.py
+Python: Python 3.15.2
+Pytest: pytest 9.2.0
+Nonzero test count: 1
+Exit code: 0
+
+Focused test output (includes expected and actual values):
+============================= test session starts ==============================
+platform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/rohitkshirsagar/snai tasks/learn-python
+plugins: anyio-4.16.0
+collecting ... collected 1 item
+
+src/classes/test_class_objects.py::test_class_objects class default: expected=0, actual=0
+class doc: expected='Example of the complex numbers class', actual='Example of the complex numbers class'
+updated class real: expected=10, actual=10
+empty instance: expected state={}, actual state={}; expected inherited attributes=(10, 0), actual=(10, 0)
+constructor input=(3.0, -4.5): expected=(3.0, -4.5), actual=(3.0, -4.5)
+PASSED
+
+============================== 1 passed in 0.01s ===============================
