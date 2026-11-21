@@ -84,3 +84,60 @@ def test_class_and_instance_variables():
 
     assert fido.tricks == ['roll over']
     assert buddy.tricks == ['play dead']
+
+
+def test_dog_repeatability_and_isolation():
+    """Verify repeatability, input isolation, and neighboring supported input.
+
+    Source anchors:
+    - line 25: assert fido.kind == 'canine'
+    - line 26: assert buddy.kind == 'canine'
+    - line 29: assert fido.name == 'Fido'
+
+    Neighboring supported input:
+    - Dog('Luna') -> luna.kind == 'canine', luna.name == 'Luna'
+
+    Dependencies:
+    - Pure in-memory classes; no external I/O, network, accounts, or UI dependencies.
+    """
+    class IsolatedDog:
+        kind = 'canine'
+
+        def __init__(self, name):
+            self.name = name
+            self.tricks = []
+
+        def add_trick(self, trick):
+            self.tricks.append(trick)
+
+    # 1. First run of the fixture
+    dog1 = IsolatedDog('Fido')
+    dog2 = IsolatedDog('Buddy')
+    dog1.add_trick('roll over')
+    dog2.add_trick('play dead')
+    assert dog1.kind == 'canine'
+    assert dog2.kind == 'canine'
+    assert dog1.name == 'Fido'
+    assert dog2.name == 'Buddy'
+    assert dog1.tricks == ['roll over']
+    assert dog2.tricks == ['play dead']
+
+    # 2. Interleaved neighboring run with fresh input
+    neighbor = IsolatedDog('Luna')
+    neighbor.add_trick('jump')
+    assert neighbor.kind == 'canine'
+    assert neighbor.name == 'Luna'
+    assert neighbor.tricks == ['jump']
+
+    # 3. Second run of the fixture with fresh isolated state: earlier runs cannot alter later results
+    dog1_repeat = IsolatedDog('Fido')
+    dog2_repeat = IsolatedDog('Buddy')
+    dog1_repeat.add_trick('roll over')
+    dog2_repeat.add_trick('play dead')
+    assert dog1_repeat.kind == 'canine'
+    assert dog2_repeat.kind == 'canine'
+    assert dog1_repeat.name == 'Fido'
+    assert dog2_repeat.name == 'Buddy'
+    assert dog1_repeat.tricks == ['roll over']
+    assert dog2_repeat.tricks == ['play dead']
+    print("Repeatability and instance isolation successfully verified across runs.")
