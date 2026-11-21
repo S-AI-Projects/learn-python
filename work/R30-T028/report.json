@@ -1,0 +1,129 @@
+{
+  "return_value": "None",
+  "branches_return_value": "None",
+  "regression_return_value": "None",
+  "anchors": [
+    {
+      "check": "number == 5",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "check": "number != 3",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "check": "number > 3",
+      "expected": true,
+      "actual": true
+    }
+  ],
+  "false_branches": [
+    {
+      "check": "5 == 4",
+      "source": "Line 14 \u2013 Equal False branch",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "check": "5 != 5",
+      "source": "Line 18 \u2013 Not-equal False branch",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "check": "5 > 5",
+      "source": "Line 22 \u2013 Greater-than boundary (False)",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "check": "5 < 5",
+      "source": "Line 26 \u2013 Less-than boundary (False)",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "check": "5 >= 6",
+      "source": "Line 30 \u2013 GTE False branch",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "check": "5 <= 4",
+      "source": "Line 34 \u2013 LTE False branch",
+      "expected": false,
+      "actual": false
+    }
+  ],
+  "state_after_false_branch": {
+    "check": "number unchanged after False comparison",
+    "expected": true,
+    "actual": true
+  },
+  "success_after_false_branch": {
+    "check": "number > 3 succeeds after False branch",
+    "expected": true,
+    "actual": true
+  },
+  "neighboring_input": {
+    "number": 6,
+    "cases": [
+      {
+        "check": "6 == 6",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "check": "6 != 3",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "check": "6 > 3",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "check": "6 < 8",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "check": "6 >= 5",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "check": "6 <= 6",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "check": "not (6 == 5)",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "check": "not (6 > 6)",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "check": "not (6 < 6)",
+        "expected": true,
+        "actual": true
+      }
+    ]
+  },
+  "module_attrs_mutated": [],
+  "pytest_stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3\ncachedir: .pytest_cache\nrootdir: /Users/prishapandya_25/Projects/learn-python\ncollecting ... collected 3 items\n\nsrc/operators/test_comparison.py::test_comparison_operators PASSED       [ 33%]\nsrc/operators/test_comparison.py::test_comparison_operators_branches PASSED [ 66%]\nsrc/operators/test_comparison.py::test_comparison_operators_regression PASSED [100%]\n\n============================== 3 passed in 0.01s ===============================\n",
+  "pytest_stderr": "",
+  "pytest_returncode": 0,
+  "pytest_test_count": 3,
+  "python_version": "Python 3.15.2",
+  "pytest_version": "pytest 9.2.0",
+  "failures": [],
+  "passed": true
+}
