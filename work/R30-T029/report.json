@@ -1,0 +1,103 @@
+{
+  "return_value": "None",
+  "scaling_test_return_value": "None",
+  "regression_return_value": "None",
+  "anchors": [
+    {
+      "check": "fido.kind == canine",
+      "expected": "canine",
+      "actual": "canine"
+    },
+    {
+      "check": "buddy.kind == canine",
+      "expected": "canine",
+      "actual": "canine"
+    },
+    {
+      "check": "fido.name == Fido",
+      "expected": "Fido",
+      "actual": "Fido"
+    }
+  ],
+  "neighboring_input": [
+    {
+      "check": "luna.kind == canine",
+      "expected": "canine",
+      "actual": "canine"
+    },
+    {
+      "check": "luna.name == Luna",
+      "expected": "Luna",
+      "actual": "Luna"
+    }
+  ],
+  "scaling_benchmark": {
+    "10": {
+      "input_size_N": 10,
+      "repetitions": 5,
+      "durations_seconds": [
+        4.917001206194982e-06,
+        4.417001036927104e-06,
+        3.707998985191807e-06,
+        3.3329997677356005e-06,
+        2.999999196617864e-06
+      ],
+      "median_seconds": 3.707998985191807e-06,
+      "min_seconds": 2.999999196617864e-06,
+      "max_seconds": 4.917001206194982e-06,
+      "range_seconds": 1.917002009577118e-06,
+      "operations_count": 20,
+      "correctness": true
+    },
+    "50": {
+      "input_size_N": 50,
+      "repetitions": 5,
+      "durations_seconds": [
+        1.1041998732252978e-05,
+        1.2958000297658145e-05,
+        1.2208998668938875e-05,
+        1.208300091093406e-05,
+        1.2167000022600405e-05
+      ],
+      "median_seconds": 1.2167000022600405e-05,
+      "min_seconds": 1.1041998732252978e-05,
+      "max_seconds": 1.2958000297658145e-05,
+      "range_seconds": 1.9160015654051676e-06,
+      "operations_count": 100,
+      "correctness": true
+    },
+    "100": {
+      "input_size_N": 100,
+      "repetitions": 5,
+      "durations_seconds": [
+        2.300000051036477e-05,
+        2.7624999347608536e-05,
+        2.4417000531684607e-05,
+        2.408299951639492e-05,
+        2.4167000447050668e-05
+      ],
+      "median_seconds": 2.4167000447050668e-05,
+      "min_seconds": 2.300000051036477e-05,
+      "max_seconds": 2.7624999347608536e-05,
+      "range_seconds": 4.624998837243766e-06,
+      "operations_count": 200,
+      "correctness": true
+    }
+  },
+  "complexity_statement": {
+    "input_size_variable": "N (number of DogWithTricks instances created)",
+    "theoretical_worst_case": "O(N) time and O(N) space",
+    "observed_scaling": "Operations scale strictly linearly with instance count N (2*N core operations for N dogs). Timing across N=[10, 50, 100] shows sub-millisecond linear progression without polynomial blowup.",
+    "wall_clock_independent": true
+  },
+  "module_attrs_mutated": [],
+  "pytest_command": "/Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest src/classes/test_class_and_instance_variables.py -v",
+  "pytest_stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3\ncachedir: .pytest_cache\nrootdir: /Users/prishapandya_25/Projects/learn-python\ncollecting ... collected 3 items\n\nsrc/classes/test_class_and_instance_variables.py::test_class_and_instance_variables PASSED [ 33%]\nsrc/classes/test_class_and_instance_variables.py::test_class_and_instance_variables_scaling PASSED [ 66%]\nsrc/classes/test_class_and_instance_variables.py::test_class_and_instance_variables_regression PASSED [100%]\n\n============================== 3 passed in 0.02s ===============================\n",
+  "pytest_stderr": "",
+  "pytest_returncode": 0,
+  "pytest_test_count": 3,
+  "python_version": "Python 3.15.2",
+  "pytest_version": "pytest 9.2.0",
+  "failures": [],
+  "passed": true
+}
