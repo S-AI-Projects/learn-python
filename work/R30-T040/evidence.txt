@@ -1,0 +1,82 @@
+R30-T040 formats __init__ mutation-resistant check
+==================================================
+Source contract anchors in src/modules/sound_package/formats/__init__.py:
+- line 5: __all__ = ['wav', 'aif']
+- line 7: SUPPORTED_FORMATS = ('wav', 'aif')
+
+Inputs and Expected Results:
+- Smallest valid input: is_supported_format('wav') == True
+- Ordinary valid input: is_supported_format('aif') == True
+- Case-normalized input: is_supported_format('.wav') == True
+- Unsupported format input: is_supported_format('mp3') == False
+
+Mutant Rejection Verification:
+- Plausible one-line mistake: replacing 'normalized in SUPPORTED_FORMATS' with 'normalized == \'wav\''.
+- The mutant failed test_formats_init_smallest_and_ordinary_inputs on 'aif' as expected.
+- Mutant exit code: 1
+
+Requested command: python3 work/R30-T040/check.py
+Focused pytest command: /Library/Frameworks/Python.framework/Versions/3.14/bin/python3 -m pytest -s -v src/modules/sound_package/formats/test_formats_init.py
+Python: Python 3.14.7
+Pytest: pytest 9.2.0
+Nonzero test count: 2
+Exit code: 0
+
+Focused test output:
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.14/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/shivamsourav/Ai-Project
+collecting ... collected 2 items
+
+src/modules/sound_package/formats/test_formats_init.py::test_formats_init_contract PASSED
+src/modules/sound_package/formats/test_formats_init.py::test_formats_init_smallest_and_ordinary_inputs smallest valid input: 'wav' -> expected=True, actual=True
+ordinary valid input: 'aif' -> expected=True, actual=True
+PASSED
+
+============================== 2 passed in 0.02s ===============================
+
+Mutant execution output:
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0
+rootdir: /var/folders/hd/b75_3d8n0gg4gqdzlkln7hsh0000gn/T/tmpu9krzs75/sound_package/formats
+collected 2 items
+
+../../../var/folders/hd/b75_3d8n0gg4gqdzlkln7hsh0000gn/T/tmpu9krzs75/sound_package/formats/test_formats_init.py . [ 50%]
+F                                                                        [100%]
+
+=================================== FAILURES ===================================
+________________ test_formats_init_smallest_and_ordinary_inputs ________________
+
+    def test_formats_init_smallest_and_ordinary_inputs():
+        """Verify is_supported_format with smallest and ordinary valid inputs and boundaries.
+    
+        Preconditions established at formats/__init__.py line 7: SUPPORTED_FORMATS = ('wav', 'aif').
+    
+        Test cases:
+        - Smallest valid input: 'wav' -> True
+        - Ordinary valid input: 'aif' -> True
+        - Prefix-stripped input: '.wav' -> True
+        - Uppercase normalized input: 'AIF' -> True
+        - Unsupported input: 'mp3' -> False
+        - Smallest invalid input: '' -> False
+        - Non-string input: None -> False
+        """
+        # 1. Smallest valid input
+        actual_wav = is_supported_format('wav')
+        print(f"smallest valid input: 'wav' -> expected=True, actual={actual_wav}")
+        assert actual_wav is True
+    
+        # 2. Ordinary valid input
+        actual_aif = is_supported_format('aif')
+        print(f"ordinary valid input: 'aif' -> expected=True, actual={actual_aif}")
+>       assert actual_aif is True
+E       assert False is True
+
+/var/folders/hd/b75_3d8n0gg4gqdzlkln7hsh0000gn/T/tmpu9krzs75/sound_package/formats/test_formats_init.py:39: AssertionError
+----------------------------- Captured stdout call -----------------------------
+smallest valid input: 'wav' -> expected=True, actual=True
+ordinary valid input: 'aif' -> expected=True, actual=False
+=========================== short test summary info ============================
+FAILED ../../../var/folders/hd/b75_3d8n0gg4gqdzlkln7hsh0000gn/T/tmpu9krzs75/sound_package/formats/test_formats_init.py::test_formats_init_smallest_and_ordinary_inputs
+========================= 1 failed, 1 passed in 0.02s ==========================
