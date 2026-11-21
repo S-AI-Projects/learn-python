@@ -1,0 +1,38 @@
+R30-T042 zlib boundary check
+============================
+Source contract anchors in src/standard_libraries/test_zlib.py:
+- line 14: fixture b'witch which has which witches wrist watch'; line 15 asserts length 41.
+- line 17 compresses the fixture; line 18 asserts compressed length 37.
+- line 20 decompresses the compressed fixture; line 21 asserts the original bytes.
+
+Boundary table for the bytes passed to zlib.compress (line 17):
+- input b'' (minimum zero-length bytes): expected decompressed output b''.
+- input b'\x00' (neighboring one-byte input): expected decompressed output b'\x00'; expected CRC-32 3523407757 (0xD202EF8D).
+Independent CRC-32 calculation for b"\x00": start with 0xFFFFFFFF; applying the reflected 0xEDB88320 polynomial for eight zero bits gives 0x2DFD1072; final XOR with 0xFFFFFFFF gives 0xD202EF8D (3523407757). No unsupported-input exception policy is asserted.
+The example uses in-memory bytes and has no external I/O or mutation.
+
+Baseline before adding the runner: 3 passed; all explicit expected and actual values matched.
+
+Requested command: python3 work/R30-T042/check.py
+Focused pytest command: /Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest -s -v src/standard_libraries/test_zlib.py
+Python: Python 3.15.2
+Pytest: pytest 9.2.0
+Nonzero test count: 3
+Exit code: 0
+
+Focused test output (includes expected and actual values):
+============================= test session starts ==============================
+platform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/rohitkshirsagar/snai tasks/learn-python
+plugins: anyio-4.16.0
+collecting ... collected 3 items
+
+src/standard_libraries/test_zlib.py::test_zlib PASSED
+src/standard_libraries/test_zlib.py::test_zlib_empty_bytes_boundary empty bytes: expected=b'', actual=b''
+PASSED
+src/standard_libraries/test_zlib.py::test_zlib_one_byte_neighbor one-byte neighbor: expected=b'\x00', actual=b'\x00'
+one-byte CRC-32: expected=3523407757, actual=3523407757
+PASSED
+
+============================== 3 passed in 0.01s ===============================
