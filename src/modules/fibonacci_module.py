@@ -9,7 +9,7 @@ value of the global variable __name__.
 
 
 def fibonacci_at_position(position):
-    """Return Fibonacci number at specified position"""
+    """Return the Fibonacci number at zero-based position using local state."""
     current_position = 0
     previous_number, current_number = 0, 1
     while current_position < position:
