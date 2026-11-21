@@ -6,9 +6,38 @@ Reading from a file does not always have to be sequential. There are methods to 
 specific locations in the file, much like flipping to a page in a book.
 """
 
+import doctest
+import inspect
+import io
+
 
 def test_file_methods():
-    """Methods of File Objects"""
+    """Methods of File Objects.
+
+    Example using the contents of ``binary_file`` (``0123456789abcdef``):
+
+    >>> from io import StringIO
+    >>> multi_line_file = StringIO('first line\\nsecond line\\nthird line')
+    >>> read_data = multi_line_file.read()
+    >>> read_data
+    'first line\\nsecond line\\nthird line'
+    >>> binary_file = StringIO('0123456789abcdef')
+    >>> binary_file.seek(0)
+    0
+    >>> binary_file.seek(6)
+    6
+    >>> binary_file.read(1)
+    '6'
+    >>> binary_file.tell()
+    7
+    >>> binary_file.seek(7)
+    7
+    >>> binary_file.read(1)
+    '7'
+
+    The key transition is that ``read(1)`` consumes the character at offset 6,
+    advancing the stream to offset 7 before the neighboring read.
+    """
 
     multi_line_file = open('src/files/multi_line_file.txt', 'r')
     binary_file = open('src/files/binary_file', 'r')
@@ -48,3 +77,36 @@ def test_file_methods():
 
     multi_line_file.close()
     binary_file.close()
+
+
+def test_file_methods_documented_example():
+    """Execute the worked example and assert its displayed results."""
+    docstring = inspect.cleandoc(test_file_methods.__doc__)
+    example = doctest.DocTestParser().get_doctest(
+        docstring,
+        {},
+        'test_file_methods',
+        __file__,
+        0,
+    )
+    displayed_output = io.StringIO()
+    runner = doctest.DocTestRunner(verbose=True)
+    result = runner.run(example, out=displayed_output.write)
+    actual_display = displayed_output.getvalue()
+    print(
+        'doctest: expected failures=0, expected examples=11; '
+        'actual failures={}, actual examples={}'.format(
+            result.failed,
+            result.attempted,
+        )
+    )
+    print('doctest display:\n{}'.format(actual_display))
+    assert result.failed == 0
+    assert result.attempted == 11
+    assert (
+        "Expecting:\n    'first line\\nsecond line\\nthird line'\nok"
+        in actual_display
+    )
+    assert 'Expecting:\n    6\nok' in actual_display
+    assert "Expecting:\n    '6'\nok" in actual_display
+    assert "Expecting:\n    '7'\nok" in actual_display
