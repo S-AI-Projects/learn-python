@@ -1,0 +1,66 @@
+R30-T050 list indexing mutation-resistance check
+================================================
+Source contract: test_list_type in src/data_types/test_lists.py (line 17) has no arguments and implicitly returns None. It uses local lists only (including the mutations at lines 43-61) and has no external I/O; pytest is its only dependency. The five-item fixture at line 23 is checked as a list at line 25, with index 0 equal to 1 and index -1 equal to 25 at lines 29-30. The new test checks the same boundaries on six literal squares. Independently, the first value is 1 and the final value is 6**2 = 36, so expected is (1, 36).
+Fresh-input invariant: two separately constructed equivalent lists must each yield (1, 36); the test also expects the full observed sequence [(1, 36), (1, 36)].
+Mutation: in a temporary copy of the test module, changed only squares[-1] to squares[-2]. The same named regression must fail because it observes (1, 25) instead of (1, 36). The repository source is not mutated.
+
+Focused pytest command: /Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest -s -v src/data_types/test_lists.py
+Mutation pytest command: /Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest -q -s <temporary mutant>::test_list_indexing_neighboring_input
+Requested command: python3 work/R30-T050/check.py
+Python: Python 3.15.2
+Pytest: pytest 9.2.0
+Platform: macOS-27.2.1-arm64-arm-64bit-Mach-O
+Original tests: exit=0, collected nonzero test count=6
+Mutant: exit=1, detected by the named regression=True
+Mutant expected/actual observation: expected=(1, 36), actual=(1, 25)
+
+Original pytest output:
+============================= test session starts ==============================
+platform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/rohitkshirsagar/snai tasks/learn-python
+plugins: anyio-4.16.0
+collecting ... collected 6 items
+
+src/data_types/test_lists.py::test_list_type PASSED
+src/data_types/test_lists.py::test_list_indexing_neighboring_input neighbor squares=[1, 4, 9, 16, 25, 36]: expected=(1, 36), actual=(1, 36)
+neighbor squares=[1, 4, 9, 16, 25, 36]: expected=(1, 36), actual=(1, 36)
+PASSED
+src/data_types/test_lists.py::test_list_methods PASSED
+src/data_types/test_lists.py::test_del_statement PASSED
+src/data_types/test_lists.py::test_list_comprehensions PASSED
+src/data_types/test_lists.py::test_nested_list_comprehensions PASSED
+
+============================== 6 passed in 0.01s ===============================
+Mutant pytest output:
+neighbor squares=[1, 4, 9, 16, 25, 36]: expected=(1, 36), actual=(1, 25)
+F
+=================================== FAILURES ===================================
+_____________________ test_list_indexing_neighboring_input _____________________
+
+    def test_list_indexing_neighboring_input():
+        """Protect final-item indexing for a neighboring list length."""
+        expected = (1, 36)
+        actual_runs = []
+    
+        for _ in range(2):
+            # A fresh equivalent fixture ensures the result does not depend on prior state.
+            squares = [1, 4, 9, 16, 25, 36]
+            actual = (squares[0], squares[-2])
+            print(
+                'neighbor squares={!r}: expected={!r}, actual={!r}'.format(
+                    squares,
+                    expected,
+                    actual,
+                )
+            )
+>           assert actual == expected
+E           assert (1, 25) == (1, 36)
+E             
+E             At index 1 diff: 25 != 36
+E             Use -v to get more diff
+
+/var/folders/7n/sr9gxr5s0c70r20xfk_kljcc0000gn/T/r30-t050-v4kt67mp/test_lists_mutant.py:94: AssertionError
+=========================== short test summary info ============================
+FAILED ../../../../var/folders/7n/sr9gxr5s0c70r20xfk_kljcc0000gn/T/r30-t050-v4kt67mp/test_lists_mutant.py::test_list_indexing_neighboring_input
+1 failed in 0.02s
