@@ -1,0 +1,68 @@
+R30-T043 regex reference check
+===============================
+Source anchors in src/standard_libraries/test_re.py:test_re:
+- The findall fixture returns foot, fell, fastest.
+- The re.sub fixture reduces the adjacent repeated word in 'cat in the the hat' to 'cat in the hat'.
+- The str.replace fixture maps 'tea for too' to 'tea for two'.
+
+Public contract: string inputs; findall returns a list; re.sub and str.replace return strings. Inputs are immutable; no external I/O or input mutation.
+Independent findall reference: split the restricted lowercase-word inputs into tokens and select tokens whose first character is f; this does not call re or reproduce the regex algorithm.
+Enumerated domain: the empty string, each of a/f/fa/ff, and all 16 ordered two-token combinations (21 total). Each expected result is compared with re.findall, and test output records input, expected, and actual values.
+Independent fixed sub cases include a a -> a, a a a -> a a, a a a a -> a a, a a b b -> a b, and cat dog -> cat dog.
+Neighboring replace input: 'tea for too too' -> 'tea for two two'.
+Fresh equivalent inputs 'foot' and 'foot' both independently expect ['foot'].
+
+Baseline before documentation/runner changes: 5 passed; no mismatch occurred, so no failure reduction or implementation fix was needed.
+
+Requested command: python3 work/R30-T043/check.py
+Focused pytest command: /Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest -s -v src/standard_libraries/test_re.py
+Python: Python 3.15.2
+Pytest: pytest 9.2.0
+Nonzero test count: 5
+Exit code: 0
+
+Focused test output (includes expected and actual values):
+============================= test session starts ==============================
+platform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/rohitkshirsagar/snai tasks/learn-python
+plugins: anyio-4.16.0
+collecting ... collected 5 items
+
+src/standard_libraries/test_re.py::test_re PASSED
+src/standard_libraries/test_re.py::test_findall_matches_independent_reference_for_small_inputs findall reference case count: expected=21, actual=21
+findall input='': expected=[], actual=[]
+findall input='a': expected=[], actual=[]
+findall input='f': expected=['f'], actual=['f']
+findall input='fa': expected=['fa'], actual=['fa']
+findall input='ff': expected=['ff'], actual=['ff']
+findall input='a a': expected=[], actual=[]
+findall input='a f': expected=['f'], actual=['f']
+findall input='a fa': expected=['fa'], actual=['fa']
+findall input='a ff': expected=['ff'], actual=['ff']
+findall input='f a': expected=['f'], actual=['f']
+findall input='f f': expected=['f', 'f'], actual=['f', 'f']
+findall input='f fa': expected=['f', 'fa'], actual=['f', 'fa']
+findall input='f ff': expected=['f', 'ff'], actual=['f', 'ff']
+findall input='fa a': expected=['fa'], actual=['fa']
+findall input='fa f': expected=['fa', 'f'], actual=['fa', 'f']
+findall input='fa fa': expected=['fa', 'fa'], actual=['fa', 'fa']
+findall input='fa ff': expected=['fa', 'ff'], actual=['fa', 'ff']
+findall input='ff a': expected=['ff'], actual=['ff']
+findall input='ff f': expected=['ff', 'f'], actual=['ff', 'f']
+findall input='ff fa': expected=['ff', 'fa'], actual=['ff', 'fa']
+findall input='ff ff': expected=['ff', 'ff'], actual=['ff', 'ff']
+PASSED
+src/standard_libraries/test_re.py::test_sub_matches_explicit_reference_cases sub input='cat in the the hat': expected='cat in the hat', actual='cat in the hat'
+sub input='a a': expected='a', actual='a'
+sub input='a a a': expected='a a', actual='a a'
+sub input='a a a a': expected='a a', actual='a a'
+sub input='a a b b': expected='a b', actual='a b'
+sub input='cat dog': expected='cat dog', actual='cat dog'
+PASSED
+src/standard_libraries/test_re.py::test_replace_neighboring_input replace input='tea for too too': expected='tea for two two', actual='tea for two two'
+PASSED
+src/standard_libraries/test_re.py::test_findall_is_repeatable_with_fresh_equivalent_inputs fresh equivalent inputs: expected=['foot'], actual=(['foot'], ['foot'])
+PASSED
+
+============================== 5 passed in 0.01s ===============================
