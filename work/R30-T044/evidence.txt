@@ -1,0 +1,108 @@
+R30-T044 documentation-string invariant check
+==============================================
+Source contract: do_nothing accepts no arguments. Its documented result is None and it has no side effects. The readable case checks the return and function attributes separately.
+The valid input domain is the singleton empty argument tuple (). A seeded random.Random(44045) selects from this domain for 100 bounded calls; each call is a fresh invocation with equivalent empty inputs.
+Expected property outputs: 100 None results and unchanged function attributes ({}). Actual expected/actual lists and state observations are recorded below.
+
+Baseline before docstring normalization: the existing exact assertion failed on Python 3.15.2 for the smallest case, do_nothing() with no arguments. The expected literal contained indentation while runtime __doc__ was dedented. The related test now uses inspect.cleandoc so the documented content is checked consistently.
+
+Requested command: python3 work/R30-T044/check.py
+Focused pytest command: /Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest -s -v src/functions/test_function_documentation_string.py
+Python: Python 3.15.2
+Pytest: pytest 9.2.0
+Nonzero test count: 3
+Focused test exit code: 0
+Broken-copy control: replaced do_nothing pass with return "broken"; expected nonzero pytest status, actual status 1 (detected=True).
+
+Focused test output (includes expected and actual values):
+============================= test session starts ==============================
+platform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/rohitkshirsagar/snai tasks/learn-python
+plugins: anyio-4.16.0
+collecting ... collected 3 items
+
+src/functions/test_function_documentation_string.py::test_function_documentation_string docstring: expected="Do nothing, but document it.\n\nNo, really, it doesn't do anything.\n\nReturns None and has no side effects.", actual="Do nothing, but document it.\n\nNo, really, it doesn't do anything.\n\nReturns None and has no side effects."
+PASSED
+src/functions/test_function_documentation_string.py::test_do_nothing_returns_none_without_mutating_attributes single call: expected return=None, actual return=None; expected attributes={}, actual attributes={}
+PASSED
+src/functions/test_function_documentation_string.py::test_do_nothing_invariant_for_seeded_empty_input_domain seed=44045, input domain=((),), expected count=100, actual=100
+property results: expected=[None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None], actual=[None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+attribute state: expected={} for each call, actual=[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+PASSED
+
+============================== 3 passed in 0.01s ===============================
+
+Broken-copy pytest output:
+.FF                                                                      [100%]
+=================================== FAILURES ===================================
+___________ test_do_nothing_returns_none_without_mutating_attributes ___________
+
+    def test_do_nothing_returns_none_without_mutating_attributes():
+        """A readable zero-argument call returns None and leaves state alone."""
+        expected_result = None
+        expected_attributes = do_nothing.__dict__.copy()
+        actual_result = do_nothing()
+        actual_attributes = do_nothing.__dict__.copy()
+        print(
+            'single call: expected return={!r}, actual return={!r}; '
+            'expected attributes={!r}, actual attributes={!r}'.format(
+                expected_result,
+                actual_result,
+                expected_attributes,
+                actual_attributes,
+            )
+        )
+>       assert actual_result is expected_result
+E       AssertionError: assert 'broken' is None
+
+/var/folders/7n/sr9gxr5s0c70r20xfk_kljcc0000gn/T/r30-t044-3nrxgmwe/test_function_documentation_string.py:64: AssertionError
+----------------------------- Captured stdout call -----------------------------
+single call: expected return=None, actual return='broken'; expected attributes={}, actual attributes={}
+___________ test_do_nothing_invariant_for_seeded_empty_input_domain ____________
+
+    def test_do_nothing_invariant_for_seeded_empty_input_domain():
+        """One hundred seeded calls cover the only valid input: no arguments."""
+        seed = 44045
+        generator = random.Random(seed)
+        valid_input_domain = ((),)
+        cases = [generator.choice(valid_input_domain) for _ in range(100)]
+        expected_results = [None] * 100
+        expected_attributes = do_nothing.__dict__.copy()
+
+        actual_results = []
+        actual_attributes = []
+        for args in cases:
+            actual_results.append(do_nothing(*args))
+            actual_attributes.append(do_nothing.__dict__.copy())
+
+        print(
+            'seed={!r}, input domain=((),), expected count=100, '
+            'actual={!r}'.format(seed, len(cases))
+        )
+        print(
+            'property results: expected={!r}, actual={!r}'.format(
+                expected_results, actual_results
+            )
+        )
+        print(
+            'attribute state: expected={!r} for each call, actual={!r}'.format(
+                expected_attributes, actual_attributes
+            )
+        )
+        assert len(cases) == 100
+>       assert actual_results == expected_results
+E       AssertionError: assert ['broken', 'b...'broken', ...] == [None, None, ...ne, None, ...]
+E
+E         At index 0 diff: 'broken' != None
+E         Use -v to get more diff
+
+/var/folders/7n/sr9gxr5s0c70r20xfk_kljcc0000gn/T/r30-t044-3nrxgmwe/test_function_documentation_string.py:98: AssertionError
+----------------------------- Captured stdout call -----------------------------
+seed=44045, input domain=((),), expected count=100, actual=100
+property results: expected=[None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None], actual=['broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken', 'broken']
+attribute state: expected={} for each call, actual=[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+=========================== short test summary info ============================
+FAILED ../../../../../../../var/folders/7n/sr9gxr5s0c70r20xfk_kljcc0000gn/T/r30-t044-3nrxgmwe/test_function_documentation_string.py::test_do_nothing_returns_none_without_mutating_attributes
+FAILED ../../../../../../../var/folders/7n/sr9gxr5s0c70r20xfk_kljcc0000gn/T/r30-t044-3nrxgmwe/test_function_documentation_string.py::test_do_nothing_invariant_for_seeded_empty_input_domain
+2 failed, 1 passed in 0.01s

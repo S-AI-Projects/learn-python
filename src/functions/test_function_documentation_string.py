@@ -14,11 +14,16 @@ separating the summary from the rest of the description. The following lines sho
 paragraphs describing the object’s calling conventions, its side effects, etc.
 """
 
+import inspect
+import random
+
 
 def do_nothing():
     """Do nothing, but document it.
 
     No, really, it doesn't do anything.
+
+    Returns None and has no side effects.
     """
     pass
 
@@ -26,17 +31,72 @@ def do_nothing():
 def test_function_documentation_string():
     """Test documentation string."""
 
-    # The Python parser does not strip indentation from multi-line string literals in Python, so
-    # tools that process documentation have to strip indentation if desired. This is done using the
-    # following convention. The first non-blank line after the first line of the string determines
-    # the amount of indentation for the entire documentation string. (We can’t use the first line
-    # since it is generally adjacent to the string’s opening quotes so its indentation is not
-    # apparent in the string literal.) Whitespace “equivalent” to this indentation is then stripped
-    # from the start of all lines of the string. Lines that are indented less should not occur, but
-    # if they occur all their leading whitespace should be stripped. Equivalence of whitespace
-    # should be tested after expansion of tabs (to 8 spaces, normally).
+    # cleandoc normalizes indentation consistently across Python versions.
+    expected_docstring = (
+        'Do nothing, but document it.\n\n'
+        "No, really, it doesn't do anything.\n\n"
+        'Returns None and has no side effects.'
+    )
+    actual_docstring = inspect.cleandoc(do_nothing.__doc__)
+    print(
+        'docstring: expected={!r}, actual={!r}'.format(
+            expected_docstring, actual_docstring
+        )
+    )
+    assert actual_docstring == expected_docstring
 
-    assert do_nothing.__doc__ == """Do nothing, but document it.
 
-    No, really, it doesn't do anything.
-    """
+def test_do_nothing_returns_none_without_mutating_attributes():
+    """A readable zero-argument call returns None and leaves state alone."""
+    expected_result = None
+    expected_attributes = do_nothing.__dict__.copy()
+    actual_result = do_nothing()
+    actual_attributes = do_nothing.__dict__.copy()
+    print(
+        'single call: expected return={!r}, actual return={!r}; '
+        'expected attributes={!r}, actual attributes={!r}'.format(
+            expected_result,
+            actual_result,
+            expected_attributes,
+            actual_attributes,
+        )
+    )
+    assert actual_result is expected_result
+    assert actual_attributes == expected_attributes
+
+
+def test_do_nothing_invariant_for_seeded_empty_input_domain():
+    """One hundred seeded calls cover the only valid input: no arguments."""
+    seed = 44045
+    generator = random.Random(seed)
+    valid_input_domain = ((),)
+    cases = [generator.choice(valid_input_domain) for _ in range(100)]
+    expected_results = [None] * 100
+    expected_attributes = do_nothing.__dict__.copy()
+
+    actual_results = []
+    actual_attributes = []
+    for args in cases:
+        actual_results.append(do_nothing(*args))
+        actual_attributes.append(do_nothing.__dict__.copy())
+
+    print(
+        'seed={!r}, input domain=((),), expected count=100, '
+        'actual={!r}'.format(seed, len(cases))
+    )
+    print(
+        'property results: expected={!r}, actual={!r}'.format(
+            expected_results, actual_results
+        )
+    )
+    print(
+        'attribute state: expected={!r} for each call, actual={!r}'.format(
+            expected_attributes, actual_attributes
+        )
+    )
+    assert len(cases) == 100
+    assert actual_results == expected_results
+    assert all(
+        attributes == expected_attributes
+        for attributes in actual_attributes
+    )
