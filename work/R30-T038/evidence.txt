@@ -1,0 +1,33 @@
+R30-T038 test_json failure-path check
+=====================================
+Source contract anchors in src/standard_libraries/test_json.py:
+- line 21: assert person_dictionary['first_name'] == 'John'
+- line 22: assert person_dictionary['age'] == 42
+- line 30: assert person_parsed_dictionary == person_dictionary
+
+Failure Path and Invariant Verification:
+- Line 28 json.loads failure: smallest input '{' raises json.JSONDecodeError.
+- State integrity: ordinary valid calls succeed immediately after exception handling.
+- Neighboring input: {'first_name': 'Jane', 'last_name': 'Smith', 'age': 43} verified.
+- Valid empty structure: '{}' successfully deserializes to {}.
+
+Requested command: python3 work/R30-T038/check.py
+Focused pytest command: /Library/Frameworks/Python.framework/Versions/3.14/bin/python3 -m pytest -s -v src/standard_libraries/test_json.py
+Python: Python 3.14.7
+Pytest: pytest 9.2.0
+Nonzero test count: 2
+Exit code: 0
+
+Focused test output:
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.14/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/shivamsourav/Ai-Project
+collecting ... collected 2 items
+
+src/standard_libraries/test_json.py::test_json PASSED
+src/standard_libraries/test_json.py::test_json_failure_and_neighbor_contracts Captured expected decoder failure: JSONDecodeError('Expecting property name enclosed in double quotes: line 1 column 2 (char 1)')
+Neighbor input verified: {'first_name': 'Jane', 'last_name': 'Smith', 'age': 43}
+PASSED
+
+============================== 2 passed in 0.01s ===============================
