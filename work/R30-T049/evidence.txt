@@ -1,0 +1,50 @@
+R30-T049 tuple-index scaling experiment
+=======================================
+Correctness fixture: fruits_tuple=("apple", "banana", "cherry"); expected type tuple, index 0 "apple", index 1 "banana".
+Neighbor regression: ("pear", "banana", "cherry", "date"); expected index 0 and -1 results ("pear", "date").
+Measured operation: values[0], corresponding to tuple indexing in test_tuples. Input-size variable n is tuple length. CPython tuple indexing is O(1) worst-case; the observed timings below are not a proof and have no pass/fail threshold.
+Method: inputs generated with fixed seeds; a fresh tuple per repetition; 5 repetitions at each of n=16, 1024, 65536; 100000 index operations per sample. Tuple generation and expected/actual checks occur outside the timed interval. timeit compiles the statement before timing. Process startup and pytest are not timed; the timeit loop overhead remains included. No file/network/UI I/O is involved.
+
+Focused pytest command: /Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest -s -v src/data_types/test_tuples.py
+Requested command: python3 work/R30-T049/check.py
+Python: Python 3.15.2
+Pytest: pytest 9.2.0
+Platform: macOS-27.2.1-arm64-arm-64bit-Mach-O
+Nonzero pytest test count: 2
+Pytest exit code: 0
+
+Per-repetition correctness and timing observations (nanoseconds per index):
+n=16, repetition=1, seed=49209, expected=90669, actual=90669, ns_per_index=5.366
+n=16, repetition=2, seed=49210, expected=755114, actual=755114, ns_per_index=5.281
+n=16, repetition=3, seed=49211, expected=748732, actual=748732, ns_per_index=5.290
+n=16, repetition=4, seed=49212, expected=532370, actual=532370, ns_per_index=5.487
+n=16, repetition=5, seed=49213, expected=337602, actual=337602, ns_per_index=5.337
+n=1024, repetition=1, seed=59289, expected=547497, actual=547497, ns_per_index=5.785
+n=1024, repetition=2, seed=59290, expected=36001, actual=36001, ns_per_index=5.744
+n=1024, repetition=3, seed=59291, expected=462790, actual=462790, ns_per_index=5.705
+n=1024, repetition=4, seed=59292, expected=470290, actual=470290, ns_per_index=5.306
+n=1024, repetition=5, seed=59293, expected=878559, actual=878559, ns_per_index=5.646
+n=65536, repetition=1, seed=704409, expected=741139, actual=741139, ns_per_index=5.533
+n=65536, repetition=2, seed=704410, expected=556857, actual=556857, ns_per_index=5.472
+n=65536, repetition=3, seed=704411, expected=620419, actual=620419, ns_per_index=5.513
+n=65536, repetition=4, seed=704412, expected=172248, actual=172248, ns_per_index=5.740
+n=65536, repetition=5, seed=704413, expected=949193, actual=949193, ns_per_index=5.674
+
+Median and min/max range per input size:
+n=16, median_ns_per_index=5.337, range_ns_per_index=(5.281, 5.487)
+n=1024, median_ns_per_index=5.705, range_ns_per_index=(5.306, 5.785)
+n=65536, median_ns_per_index=5.533, range_ns_per_index=(5.472, 5.740)
+
+Focused pytest output:
+============================= test session starts ==============================
+platform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/rohitkshirsagar/snai tasks/learn-python
+plugins: anyio-4.16.0
+collecting ... collected 2 items
+
+src/data_types/test_tuples.py::test_tuples PASSED
+src/data_types/test_tuples.py::test_tuple_indexing_neighboring_input neighbor tuple=('pear', 'banana', 'cherry', 'date'): expected=('pear', 'date'), actual=('pear', 'date')
+PASSED
+
+============================== 2 passed in 0.01s ===============================
