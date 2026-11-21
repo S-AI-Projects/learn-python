@@ -32,6 +32,8 @@ module named sys:
 @see: https://realpython.com/python-modules-packages/
 """
 
+import sys
+
 # Users of the package can import individual modules from the package, for example.
 import sound_package.effects.echo
 
@@ -43,19 +45,50 @@ from sound_package.effects import echo
 # Yet another variation is to import the desired function or variable directly:
 from sound_package.effects.echo import echo_function
 
-# Note that when using from package import item, the item can be either a submodule (or subpackage)
-# of the package, or some other name defined in the package, like a function, class or variable.
-# The import statement first tests whether the item is defined in the package; if not, it assumes
-# it is a module and attempts to load it. If it fails to find it, an ImportError exception is
-# raised.
+# Neighboring effect module import for contract comparison:
+import sound_package.effects.reverse
+from sound_package.effects.reverse import reverse_function
 
-# Contrarily, when using syntax like import item.subitem.subsubitem, each item except for the last
-# must be a package; the last item can be a module or a package but can’t be a class or function or
-# variable defined in the previous item.
+
+def get_echo_effect_results():
+    """Retrieve echo function output across all three supported package import pathways.
+
+    Refactored to separate invocation retrieval from test assertions, improving clarity
+    when verifying fully-qualified, submodule, and direct import bindings.
+    """
+    return (
+        sound_package.effects.echo.echo_function(),
+        echo.echo_function(),
+        echo_function(),
+    )
 
 
 def test_packages():
     """Packages."""
-    assert sound_package.effects.echo.echo_function() == 'Do echo effect'
-    assert echo.echo_function() == 'Do echo effect'
-    assert echo_function() == 'Do echo effect'
+    # Verify module search path anchor
+    assert isinstance(sys.path, list)
+
+    fully_qualified, submodule_imported, directly_imported = get_echo_effect_results()
+    assert fully_qualified == 'Do echo effect'
+    assert submodule_imported == 'Do echo effect'
+    assert directly_imported == 'Do echo effect'
+
+
+def test_packages_neighboring_effect_contract():
+    """Verify neighboring effect submodule (reverse) following the same import pattern.
+
+    Source anchors:
+    - line 29: >>> import sys
+    - line 30: >>> sys.path
+    - line 59: assert sound_package.effects.echo.echo_function() == 'Do echo effect'
+
+    Neighboring supported input / function:
+    - sound_package.effects.reverse.reverse_function() -> 'Do reverse effect'
+    """
+    expected_reverse = 'Do reverse effect'
+    actual_qualified = sound_package.effects.reverse.reverse_function()
+    actual_direct = reverse_function()
+
+    assert actual_qualified == expected_reverse
+    assert actual_direct == expected_reverse
+    print(f"neighbor reverse effect: expected={expected_reverse!r}, actual={actual_qualified!r}")
