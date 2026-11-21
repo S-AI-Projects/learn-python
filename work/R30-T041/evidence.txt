@@ -1,0 +1,32 @@
+R30-T041 AIF regression check
+============================
+Inputs and independent expected results:
+- Smallest and only valid input: aif_read() with no arguments (aif.py:4); expected 'Read from AIF file'.
+- Ordinary invocation: aif_read() (same sole valid input; aif.py:4); expected 'Read from AIF file'.
+- Repeated-call boundary: (aif_read(), aif_read()) (aif.py:4); expected ('Read from AIF file', 'Read from AIF file').
+The expected strings were specified literally in the tests before running the source. aif.py:6 establishes the fixed result.
+The function accepts no mutable input and performs no external I/O, so there is no observable caller-owned mutation or I/O to mock.
+
+Baseline before the source docstring change: 2 passed; the expected and actual values matched in both tests.
+
+Requested command: python3 work/R30-T041/check.py
+Focused pytest command: /Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest -s -v src/modules/sound_package/formats/test_aif.py
+Python: Python 3.15.2
+Pytest: pytest 9.2.0
+Nonzero test count: 2
+Exit code: 0
+
+Focused test output (includes expected and actual values):
+============================= test session starts ==============================
+platform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/rohitkshirsagar/snai tasks/learn-python
+plugins: anyio-4.16.0
+collecting ... collected 2 items
+
+src/modules/sound_package/formats/test_aif.py::test_aif_read_smallest_supported_call smallest supported call: expected='Read from AIF file', actual='Read from AIF file'
+PASSED
+src/modules/sound_package/formats/test_aif.py::test_aif_read_repeated_calls_return_expected_values repeated calls: expected=('Read from AIF file', 'Read from AIF file'), actual=('Read from AIF file', 'Read from AIF file')
+PASSED
+
+============================== 2 passed in 0.01s ===============================
