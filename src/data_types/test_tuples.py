@@ -18,6 +18,8 @@ def test_tuples():
     """Tuples"""
     fruits_tuple = ("apple", "banana", "cherry")
 
+    # For tuple length n, indexed access is O(1) worst-case in CPython.
+    # Timings are observations, not pass/fail thresholds or proof of the claim.
     assert isinstance(fruits_tuple, tuple)
     assert fruits_tuple[0] == "apple"
     assert fruits_tuple[1] == "banana"
@@ -86,3 +88,18 @@ def test_tuples():
 
     assert first_number == 456
     assert second_number == 123
+
+
+def test_tuple_indexing_neighboring_input():
+    """A longer valid tuple returns independently expected indexed items."""
+    fruits_tuple = ("pear", "banana", "cherry", "date")
+    expected = ("pear", "date")
+    actual = (fruits_tuple[0], fruits_tuple[-1])
+    print(
+        'neighbor tuple={!r}: expected={!r}, actual={!r}'.format(
+            fruits_tuple,
+            expected,
+            actual,
+        )
+    )
+    assert actual == expected
