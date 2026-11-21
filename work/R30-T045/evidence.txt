@@ -1,0 +1,30 @@
+R30-T045 Fibonacci repeatability check
+=======================================
+Source contract: fibonacci_at_position uses zero-based positions; its state is local to each call. It has no external dependencies, network, filesystem, or GUI activity.
+Fixture inputs: [0, 1, 2, 5, 10].
+Independently expected outputs: [0, 1, 1, 5, 55].
+The fixture is run twice with an intervening valid input 3, expected output 2. The caller-owned positions list is checked unchanged after each run. Output is deterministic, so no dependency injection or external-I/O mocking is needed.
+
+Baseline: 1 focused test passed; both fixture runs returned the expected values and the input list remained unchanged.
+
+Requested command: python3 work/R30-T045/check.py
+Focused pytest command: /Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest -s -v src/modules/test_fibonacci_module.py
+Python: Python 3.15.2
+Pytest: pytest 9.2.0
+Nonzero test count: 1
+Exit code: 0
+
+Focused test output (includes expected and actual values):
+============================= test session starts ==============================
+platform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/rohitkshirsagar/snai tasks/learn-python
+plugins: anyio-4.16.0
+collecting ... collected 1 item
+
+src/modules/test_fibonacci_module.py::test_fibonacci_at_position_is_repeatable_and_input_isolated indices=[0, 1, 2, 5, 10]: expected=[0, 1, 1, 5, 55], first=[0, 1, 1, 5, 55], second=[0, 1, 1, 5, 55]
+interleaved index=3: expected=2, actual=2
+input list: expected unchanged=[0, 1, 2, 5, 10], after first=[0, 1, 2, 5, 10], after second=[0, 1, 2, 5, 10]
+PASSED
+
+============================== 1 passed in 0.01s ===============================
