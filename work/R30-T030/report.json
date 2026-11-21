@@ -1,0 +1,52 @@
+{
+  "return_value": "None",
+  "regression_return_value": "None",
+  "anchors": [
+    {
+      "check": "parrot(1000) == message",
+      "expected": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "actual": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!"
+    },
+    {
+      "check": "parrot(voltage=1000) == message",
+      "expected": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "actual": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!"
+    },
+    {
+      "check": "parrot(voltage=1000000, action=VOOOOOM) == message",
+      "expected": "This parrot wouldn't VOOOOOM if you put 1000000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "actual": "This parrot wouldn't VOOOOOM if you put 1000000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!"
+    }
+  ],
+  "neighboring_input": {
+    "input": "parrot(250)",
+    "expected": "This parrot wouldn't voom if you put 250 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+    "actual": "This parrot wouldn't voom if you put 250 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!"
+  },
+  "mutation_analysis": {
+    "plausible_mistake_description": "Omission of trailing space delimiter in the voltage accumulation line: message += \"if you put \" + str(voltage) + \" volts through it.\"",
+    "reduced_input": 1000,
+    "expected_output": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+    "original_output": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+    "mutant_output": "This parrot wouldn't voom if you put 1000 volts through it.Lovely plumage, the Norwegian Blue. It's a stiff!",
+    "original_passed": true,
+    "mutant_failed_as_expected": true,
+    "same_named_assertion": "assert parrot(1000) == message",
+    "semantic_divergence": "Mutant concatenated \"through it.Lovely\" without space delimiter"
+  },
+  "repeatability": {
+    "run1": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+    "run2": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+    "agreed": true
+  },
+  "module_attrs_mutated": [],
+  "pytest_command": "/Library/Frameworks/Python.framework/Versions/3.15/bin/python3 -m pytest src/functions/test_function_keyword_arguments.py -v",
+  "pytest_stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.15.2, pytest-9.2.0, pluggy-1.7.0 -- /Library/Frameworks/Python.framework/Versions/3.15/bin/python3\ncachedir: .pytest_cache\nrootdir: /Users/prishapandya_25/Projects/learn-python\ncollecting ... collected 2 items\n\nsrc/functions/test_function_keyword_arguments.py::test_function_keyword_arguments PASSED [ 50%]\nsrc/functions/test_function_keyword_arguments.py::test_function_keyword_arguments_regression PASSED [100%]\n\n============================== 2 passed in 0.02s ===============================\n",
+  "pytest_stderr": "",
+  "pytest_returncode": 0,
+  "pytest_test_count": 2,
+  "python_version": "Python 3.15.2",
+  "pytest_version": "pytest 9.2.0",
+  "failures": [],
+  "passed": true
+}

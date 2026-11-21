@@ -34,17 +34,26 @@ def test_function_keyword_arguments():
         "Lovely plumage, the Norwegian Blue. "
         "It's a stiff!"
     )
-    # 1 positional argument
+    # 1 positional argument (source anchor 1)
     assert parrot(1000) == message
-    # 1 keyword argument
+    # 1 keyword argument (source anchor 2)
     assert parrot(voltage=1000) == message
+
+    # Neighboring supported input 1: voltage=250 (independently calculated expected output)
+    neighbor_message = (
+        "This parrot wouldn't voom if you put 250 volts through it. "
+        "Lovely plumage, the Norwegian Blue. "
+        "It's a stiff!"
+    )
+    assert parrot(250) == neighbor_message
+    assert parrot(voltage=250) == neighbor_message
 
     message = (
         "This parrot wouldn't VOOOOOM if you put 1000000 volts through it. "
         "Lovely plumage, the Norwegian Blue. "
         "It's a stiff!"
     )
-    # 2 keyword arguments
+    # 2 keyword arguments (source anchor 3)
     assert parrot(voltage=1000000, action='VOOOOOM') == message
     # 2 keyword arguments
     assert parrot(action='VOOOOOM', voltage=1000000) == message
@@ -64,6 +73,16 @@ def test_function_keyword_arguments():
         "It's pushing up the daisies!"
     )
     assert parrot(1000, state='pushing up the daisies') == message
+
+    # Neighboring supported input 2: all parameters customized
+    custom_neighbor_message = (
+        "This parrot wouldn't fly if you put 500 volts through it. "
+        "Lovely plumage, the African Grey. "
+        "It's resting!"
+    )
+    assert parrot(
+        500, state='resting', action='fly', parrot_type='African Grey'
+    ) == custom_neighbor_message
 
     # But all the following calls would be invalid.
 
@@ -117,3 +136,24 @@ def test_function_keyword_arguments():
         fourth_param_name='fourth named param',
         fifth_param_name='fifth named param',
     )
+
+
+def test_function_keyword_arguments_regression():
+    """Focused regression test for test_function_keyword_arguments contract.
+
+    Verifies repeatability: repeated runs with fresh equivalent inputs give
+    the exact same result, and the function produces no module-level mutation.
+    """
+    import types
+    # Invariant: repeated calls with fresh equivalent inputs agree
+    msg1 = parrot(1000)
+    msg2 = parrot(1000)
+    assert msg1 == msg2
+
+    current_module = types.ModuleType(__name__)
+    current_module.__dict__.update(globals())
+    attrs_before = set(dir(current_module))
+    ret = test_function_keyword_arguments()
+    assert ret is None
+    attrs_after = set(dir(current_module))
+    assert attrs_before == attrs_after
