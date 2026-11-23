@@ -40,8 +40,26 @@ what you're doing.
 test_variable = 'initial global value'
 
 
+def resolve_local_scope_shadowing(local_val='local value'):
+    """Isolate and resolve local-scope variable shadowing.
+
+    Assigns a value to a local-scope variable, demonstrating that local assignment
+    creates a distinct binding that shadows outer names without mutating enclosing
+    or global namespaces.
+    """
+    # pylint: disable=redefined-outer-name
+    test_variable = local_val
+    return test_variable
+
+
 def test_function_scopes():
-    """Scopes and Namespaces Example"""
+    """Scopes and Namespaces Example.
+
+    Named Refactored Responsibility:
+      resolve_local_scope_shadowing(): Extracted the contiguous local-scope variable
+      assignment and shadowing responsibility into a clear, dedicated helper while
+      preserving identical algorithm, return values, and zero side effects on outer scopes.
+    """
 
     # This is an example demonstrating how to reference the different scopes and namespaces, and
     # how global and nonlocal affect variable binding:
@@ -51,9 +69,8 @@ def test_function_scopes():
 
     def do_local():
         # Create variable that is only accessible inside current do_local() function.
-        # pylint: disable=redefined-outer-name
-        test_variable = 'local value'
-        return test_variable
+        # Delegates to the extracted local scope shadowing helper.
+        return resolve_local_scope_shadowing('local value')
 
     def do_nonlocal():
         # Address the variable from outer scope and try to change it.
@@ -88,6 +105,32 @@ def test_function_scopes():
     # test_function_scopes() function scope.
     do_global()
     assert test_variable == 'nonlocal value'
+
+
+def test_scope_resolution_neighboring_input():
+    """Verify scope resolution and shadowing on custom neighboring inputs."""
+    enclosing_var = 'neighbor enclosing initial'
+
+    def inner_local():
+        return resolve_local_scope_shadowing('neighbor local custom')
+
+    def inner_nonlocal():
+        nonlocal enclosing_var
+        enclosing_var = 'neighbor nonlocal custom'
+        return enclosing_var
+
+    # 1. Initial state
+    assert enclosing_var == 'neighbor enclosing initial'
+
+    # 2. Local shadowing: returns local value, leaves enclosing unchanged
+    local_result = inner_local()
+    assert local_result == 'neighbor local custom'
+    assert enclosing_var == 'neighbor enclosing initial'
+
+    # 3. Nonlocal rebinding: updates enclosing variable
+    nonlocal_result = inner_nonlocal()
+    assert nonlocal_result == 'neighbor nonlocal custom'
+    assert enclosing_var == 'neighbor nonlocal custom'
 
 
 def test_global_variable_access():
