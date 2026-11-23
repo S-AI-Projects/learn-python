@@ -1,0 +1,143 @@
+{
+  "python_version": "Python 3.9.6",
+  "pytest_version": "pytest 8.4.2",
+  "pytest_command": "/Library/Developer/CommandLineTools/usr/bin/python3 -m pytest /Users/mokshinisingh/Desktop/SnAI-assignment/Task5/learn-python/src/standard_libraries/test_glob.py -v --tb=short",
+  "pytest_returncode": 0,
+  "pytest_test_count": 3,
+  "documented_dependencies": [
+    {
+      "name": "Current Working Directory (CWD)",
+      "description": "Relative paths like 'src/standard_libraries/glob_files/*.txt' depend on os.getcwd() matching the repo root.",
+      "mitigation": "Dependency injection seam (glob_func) or absolute path anchors."
+    },
+    {
+      "name": "Filesystem Directory State",
+      "description": "External presence, modification, or removal of files in glob_files/ alters glob outputs directly.",
+      "mitigation": "tmp_path fixtures and mocked dependency seams for isolated testing."
+    },
+    {
+      "name": "Directory Entry Ordering",
+      "description": "Underlying filesystem readdir order is arbitrary across operating systems.",
+      "mitigation": "Explicit sorted() wrapping on all glob outputs."
+    },
+    {
+      "name": "Standard Library glob.glob",
+      "description": "Platform implementation of glob wildcard pattern matching.",
+      "mitigation": "Callable glob_func seam with default=glob.glob preserving callers."
+    }
+  ],
+  "repeatability_checks": [
+    {
+      "check": "source_anchor",
+      "pattern": "src/standard_libraries/glob_files/*.txt",
+      "expected": [
+        "src/standard_libraries/glob_files/first_file.txt",
+        "src/standard_libraries/glob_files/second_file.txt"
+      ],
+      "actual": [
+        "src/standard_libraries/glob_files/first_file.txt",
+        "src/standard_libraries/glob_files/second_file.txt"
+      ],
+      "passed": true
+    },
+    {
+      "check": "neighboring_input",
+      "pattern": "src/standard_libraries/glob_files/*first*.txt",
+      "expected": [
+        "src/standard_libraries/glob_files/first_file.txt"
+      ],
+      "actual": [
+        "src/standard_libraries/glob_files/first_file.txt"
+      ],
+      "passed": true
+    },
+    {
+      "check": "neighboring_input",
+      "pattern": "src/standard_libraries/glob_files/*second*.txt",
+      "expected": [
+        "src/standard_libraries/glob_files/second_file.txt"
+      ],
+      "actual": [
+        "src/standard_libraries/glob_files/second_file.txt"
+      ],
+      "passed": true
+    },
+    {
+      "check": "neighboring_input",
+      "pattern": "src/standard_libraries/glob_files/?irst_file.txt",
+      "expected": [
+        "src/standard_libraries/glob_files/first_file.txt"
+      ],
+      "actual": [
+        "src/standard_libraries/glob_files/first_file.txt"
+      ],
+      "passed": true
+    },
+    {
+      "check": "neighboring_input",
+      "pattern": "src/standard_libraries/glob_files/*.py",
+      "expected": [],
+      "actual": [],
+      "passed": true
+    },
+    {
+      "check": "fresh_isolated_run_1",
+      "fixture": "fixture_a",
+      "expected": [
+        "/var/folders/vz/d9slfnmj1f13z56dslg02cfr0000gn/T/tmp2xre0pnp/fixture_a/first_file.txt",
+        "/var/folders/vz/d9slfnmj1f13z56dslg02cfr0000gn/T/tmp2xre0pnp/fixture_a/second_file.txt"
+      ],
+      "actual": [
+        "/var/folders/vz/d9slfnmj1f13z56dslg02cfr0000gn/T/tmp2xre0pnp/fixture_a/first_file.txt",
+        "/var/folders/vz/d9slfnmj1f13z56dslg02cfr0000gn/T/tmp2xre0pnp/fixture_a/second_file.txt"
+      ],
+      "passed": true
+    },
+    {
+      "check": "fresh_isolated_run_2",
+      "fixture": "fixture_b",
+      "expected": [
+        "/var/folders/vz/d9slfnmj1f13z56dslg02cfr0000gn/T/tmp2xre0pnp/fixture_b/first_file.txt",
+        "/var/folders/vz/d9slfnmj1f13z56dslg02cfr0000gn/T/tmp2xre0pnp/fixture_b/second_file.txt"
+      ],
+      "actual": [
+        "/var/folders/vz/d9slfnmj1f13z56dslg02cfr0000gn/T/tmp2xre0pnp/fixture_b/first_file.txt",
+        "/var/folders/vz/d9slfnmj1f13z56dslg02cfr0000gn/T/tmp2xre0pnp/fixture_b/second_file.txt"
+      ],
+      "normalized_match_run1": true,
+      "passed": true
+    },
+    {
+      "check": "post_other_input_isolation",
+      "interleaved_csv_passed": true,
+      "interleaved_py_passed": true,
+      "post_run_matches_initial": true,
+      "expected": [
+        "/var/folders/vz/d9slfnmj1f13z56dslg02cfr0000gn/T/tmp2xre0pnp/fixture_a/first_file.txt",
+        "/var/folders/vz/d9slfnmj1f13z56dslg02cfr0000gn/T/tmp2xre0pnp/fixture_a/second_file.txt"
+      ],
+      "actual": [
+        "/var/folders/vz/d9slfnmj1f13z56dslg02cfr0000gn/T/tmp2xre0pnp/fixture_a/first_file.txt",
+        "/var/folders/vz/d9slfnmj1f13z56dslg02cfr0000gn/T/tmp2xre0pnp/fixture_a/second_file.txt"
+      ],
+      "passed": true
+    },
+    {
+      "check": "mocked_dependency_seam_isolation",
+      "mock_run_1": [
+        "src/standard_libraries/glob_files/first_file.txt",
+        "src/standard_libraries/glob_files/second_file.txt"
+      ],
+      "mock_run_2": [
+        "src/standard_libraries/glob_files/first_file.txt",
+        "src/standard_libraries/glob_files/second_file.txt"
+      ],
+      "expected": [
+        "src/standard_libraries/glob_files/first_file.txt",
+        "src/standard_libraries/glob_files/second_file.txt"
+      ],
+      "passed": true
+    }
+  ],
+  "all_checks_passed": true
+}
