@@ -20,9 +20,22 @@ Placing a comma-separated list of key:value pairs within the braces adds initial
 to the dictionary; this is also the way dictionaries are written on output.
 """
 
+import pytest
+
 
 def test_dictionary():
-    """Dictionary"""
+    """Dictionary contract, failure paths, and state-preservation guarantees.
+
+    Documented Source Lines & Contract:
+      1. Failure Path (lines 38-40, 61): Indexing an absent key (fruits_dictionary['missing'])
+         or deleting an absent key (del fruits_dictionary['missing']) raises KeyError.
+      2. Valid Absent-Result / Fallback Path: fruits_dictionary.get('missing') returns None
+         or a custom default sentinel, without mutating or raising.
+      3. Smallest Input (line 18): Empty dictionary {} behavior on indexing (KeyError)
+         and fallback (.get() -> None or sentinel).
+      4. State Preservation: Caller-owned dictionary keys, values, and length remain
+         completely intact and uncorrupted after a KeyError failure.
+    """
 
     fruits_dictionary = {
         'cherry': 'red',
@@ -56,6 +69,52 @@ def test_dictionary():
     # It is also possible to delete a key:value pair with del.
     del fruits_dictionary['pineapple']
     assert list(fruits_dictionary) == ['cherry', 'apple', 'banana']
+
+    # --- Failure-Path & Recovery Regression Tests ---
+    # Record caller-owned state snapshot before triggering failure
+    state_before_len = len(fruits_dictionary)
+    state_before_keys = list(fruits_dictionary.keys())
+    state_before_items = dict(fruits_dictionary)
+
+    # 1. Failure path: KeyError on missing key lookup
+    with pytest.raises(KeyError):
+        _ = fruits_dictionary['not_existing_fruit']
+
+    # 1b. Failure path: KeyError on deleting an absent key
+    with pytest.raises(KeyError):
+        del fruits_dictionary['not_existing_fruit']
+
+    # 2. State preservation assertion: dictionary remains intact and uncorrupted after KeyError
+    assert len(fruits_dictionary) == state_before_len
+    assert list(fruits_dictionary.keys()) == state_before_keys
+    assert fruits_dictionary == state_before_items
+
+    # 3. Post-failure recovery: ordinary valid lookup succeeds immediately after failure
+    assert fruits_dictionary['apple'] == 'red'
+    assert fruits_dictionary['banana'] == 'yellow'
+    assert fruits_dictionary['cherry'] == 'red'
+
+    # --- Valid Absent-Result / Fallback Path (.get() and empty dict) ---
+    # .get() on absent key returns None by default without raising
+    assert fruits_dictionary.get('not_existing_fruit') is None
+
+    # .get() on absent key with custom default sentinel
+    assert fruits_dictionary.get('not_existing_fruit', 'default_color') == 'default_color'
+
+    # Derived neighboring input: querying existing key via .get() and fallback
+    assert fruits_dictionary.get('apple') == 'red'
+    assert fruits_dictionary.get('banana', 'fallback') == 'yellow'
+    assert fruits_dictionary.get('mango', 'unknown fruit') == 'unknown fruit'
+
+    # Smallest input: empty dictionary {} behavior
+    empty_dict = {}
+    assert len(empty_dict) == 0
+    assert not bool(empty_dict)
+    with pytest.raises(KeyError):
+        _ = empty_dict['any_key']
+    assert empty_dict.get('any_key') is None
+    assert empty_dict.get('any_key', 'fallback_sentinel') == 'fallback_sentinel'
+    assert len(empty_dict) == 0
 
     # The dict() constructor builds dictionaries directly from sequences of key-value pairs.
     dictionary_via_constructor = dict([('sape', 4139), ('guido', 4127), ('jack', 4098)])
