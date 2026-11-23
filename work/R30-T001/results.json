@@ -1,0 +1,110 @@
+{
+  "python_version": "Python 3.9.6",
+  "pytest_version": "pytest 8.4.2",
+  "pytest_command": "/Library/Developer/CommandLineTools/usr/bin/python3 -m pytest /Users/mokshinisingh/Desktop/SnAI-assignment/Task1/learn-python/src/functions/test_function_default_arguments.py -v --tb=short",
+  "pytest_returncode": 0,
+  "pytest_test_count": 1,
+  "contract_cases": [
+    {
+      "label": "anchor: power_of(3) default exponent",
+      "inputs": {
+        "args": [
+          3
+        ],
+        "kwargs": {}
+      },
+      "expected": 9,
+      "actual": 9,
+      "passed": true
+    },
+    {
+      "label": "anchor: power_of(3, 2) explicit 2",
+      "inputs": {
+        "args": [
+          3,
+          2
+        ],
+        "kwargs": {}
+      },
+      "expected": 9,
+      "actual": 9,
+      "passed": true
+    },
+    {
+      "label": "anchor: power_of(3, 3)",
+      "inputs": {
+        "args": [
+          3,
+          3
+        ],
+        "kwargs": {}
+      },
+      "expected": 27,
+      "actual": 27,
+      "passed": true
+    },
+    {
+      "label": "ordinary: power_of(2) default exponent",
+      "inputs": {
+        "args": [
+          2
+        ],
+        "kwargs": {}
+      },
+      "expected": 4,
+      "actual": 4,
+      "passed": true
+    },
+    {
+      "label": "boundary: power_of(0) base=0",
+      "inputs": {
+        "args": [
+          0
+        ],
+        "kwargs": {}
+      },
+      "expected": 0,
+      "actual": 0,
+      "passed": true
+    },
+    {
+      "label": "boundary: power_of(3, 0) exponent=0",
+      "inputs": {
+        "args": [
+          3,
+          0
+        ],
+        "kwargs": {}
+      },
+      "expected": 1,
+      "actual": 1,
+      "passed": true
+    },
+    {
+      "label": "boundary: power_of(2, 2) equal b/e",
+      "inputs": {
+        "args": [
+          2,
+          2
+        ],
+        "kwargs": {}
+      },
+      "expected": 4,
+      "actual": 4,
+      "passed": true
+    }
+  ],
+  "mutation_check": {
+    "label": "mutation/state: power_of(3) called twice \u2192 both 9",
+    "inputs": {
+      "args": [
+        3
+      ],
+      "kwargs": {}
+    },
+    "expected": 9,
+    "actual_first_call": 9,
+    "actual_second_call": 9,
+    "passed": true
+  }
+}
