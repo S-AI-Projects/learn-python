@@ -1,0 +1,145 @@
+{
+  "issue": "#15",
+  "task": "R30-T010",
+  "target_file": "src/control_flow/test_while.py",
+  "tool_versions": {
+    "python": "3.9.6",
+    "pytest": "8.4.2"
+  },
+  "source_anchor": "assert result == 32 (line 52)",
+  "pytest_execution": {
+    "command": "/Library/Developer/CommandLineTools/usr/bin/python3 -m pytest src/control_flow/test_while.py -v --tb=short",
+    "exit_code": 0,
+    "test_count": 1,
+    "success": true
+  },
+  "contract_checks": [
+    {
+      "name": "source_anchor_2_pow_5",
+      "input": {
+        "base": 2,
+        "exponent": 5
+      },
+      "expected": 32,
+      "actual": 32,
+      "status": "PASSED"
+    },
+    {
+      "name": "neighboring_smaller_power_2_pow_4",
+      "input": {
+        "base": 2,
+        "exponent": 4
+      },
+      "expected": 16,
+      "actual": 16,
+      "status": "PASSED"
+    },
+    {
+      "name": "neighboring_larger_power_2_pow_6",
+      "input": {
+        "base": 2,
+        "exponent": 6
+      },
+      "expected": 64,
+      "actual": 64,
+      "status": "PASSED"
+    },
+    {
+      "name": "neighboring_different_base_3_pow_3",
+      "input": {
+        "base": 3,
+        "exponent": 3
+      },
+      "expected": 27,
+      "actual": 27,
+      "status": "PASSED"
+    },
+    {
+      "name": "boundary_zero_exponent_2_pow_0",
+      "input": {
+        "base": 2,
+        "exponent": 0
+      },
+      "expected": 1,
+      "actual": 1,
+      "status": "PASSED"
+    },
+    {
+      "name": "boundary_single_iteration_2_pow_1",
+      "input": {
+        "base": 2,
+        "exponent": 1
+      },
+      "expected": 2,
+      "actual": 2,
+      "status": "PASSED"
+    }
+  ],
+  "repeatability": {
+    "runs_count": 5,
+    "consistent": true,
+    "runs": [
+      {
+        "run": 1,
+        "2^5": 32,
+        "2^0": 1,
+        "2^4": 16
+      },
+      {
+        "run": 2,
+        "2^5": 32,
+        "2^0": 1,
+        "2^4": 16
+      },
+      {
+        "run": 3,
+        "2^5": 32,
+        "2^0": 1,
+        "2^4": 16
+      },
+      {
+        "run": 4,
+        "2^5": 32,
+        "2^0": 1,
+        "2^4": 16
+      },
+      {
+        "run": 5,
+        "2^5": 32,
+        "2^0": 1,
+        "2^4": 16
+      }
+    ]
+  },
+  "mutant_verification": [
+    {
+      "mutant_name": "off_by_one_boundary_condition",
+      "description": "Mutated 'while power > 0:' to 'while power >= 0:'",
+      "reduced_distinguishing_input": {
+        "base": 2,
+        "exponent": 0
+      },
+      "expected_output": 1,
+      "original_output": 1,
+      "mutant_output": 2,
+      "mutant_caught": true,
+      "caught_exception": "While-loop contract violated for 2^0: expected 1, got 2",
+      "status": "PASSED"
+    },
+    {
+      "mutant_name": "wrong_accumulation_operator",
+      "description": "Mutated 'accum *= base' to 'accum += base'",
+      "reduced_distinguishing_input": {
+        "base": 2,
+        "exponent": 5
+      },
+      "expected_output": 32,
+      "original_output": 32,
+      "mutant_output": 11,
+      "mutant_caught": true,
+      "caught_exception": "While-loop contract violated for 2^5: expected 32, got 11",
+      "status": "PASSED"
+    }
+  ],
+  "all_passed": true
+}
