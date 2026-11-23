@@ -1,0 +1,157 @@
+{
+  "python_version": "Python 3.9.6",
+  "pytest_version": "pytest 8.4.2",
+  "pytest_command": "/Library/Developer/CommandLineTools/usr/bin/python3 -m pytest /Users/mokshinisingh/Desktop/SnAI-assignment/Task2/learn-python/src/functions/test_function_keyword_arguments.py -v --tb=short",
+  "pytest_returncode": 0,
+  "pytest_test_count": 1,
+  "valid_cases": [
+    {
+      "partition": "valid interior",
+      "label": "parrot(1000) [anchor]",
+      "expected": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "actual": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "passed": true
+    },
+    {
+      "partition": "valid boundary",
+      "label": "parrot(voltage=1000) [anchor]",
+      "expected": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "actual": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "passed": true
+    },
+    {
+      "partition": "valid interior",
+      "label": "parrot(voltage=1000000, action='VOOOOOM') [anchor]",
+      "expected": "This parrot wouldn't VOOOOOM if you put 1000000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "actual": "This parrot wouldn't VOOOOOM if you put 1000000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "passed": true
+    },
+    {
+      "partition": "valid interior",
+      "label": "parrot(action='VOOOOOM', voltage=1000000) order-free",
+      "expected": "This parrot wouldn't VOOOOOM if you put 1000000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "actual": "This parrot wouldn't VOOOOOM if you put 1000000 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "passed": true
+    },
+    {
+      "partition": "valid interior",
+      "label": "parrot(1000000, 'bereft of life', 'jump') 3 positional",
+      "expected": "This parrot wouldn't jump if you put 1000000 volts through it. Lovely plumage, the Norwegian Blue. It's bereft of life!",
+      "actual": "This parrot wouldn't jump if you put 1000000 volts through it. Lovely plumage, the Norwegian Blue. It's bereft of life!",
+      "passed": true
+    },
+    {
+      "partition": "valid interior",
+      "label": "parrot(1000, state='pushing up the daisies')",
+      "expected": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's pushing up the daisies!",
+      "actual": "This parrot wouldn't voom if you put 1000 volts through it. Lovely plumage, the Norwegian Blue. It's pushing up the daisies!",
+      "passed": true
+    },
+    {
+      "partition": "valid boundary",
+      "label": "parrot(0) \u2014 neighboring voltage boundary",
+      "expected": "This parrot wouldn't voom if you put 0 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "actual": "This parrot wouldn't voom if you put 0 volts through it. Lovely plumage, the Norwegian Blue. It's a stiff!",
+      "passed": true
+    },
+    {
+      "partition": "valid boundary",
+      "label": "parrot(voltage=0, state='dead', action='run', parrot_type='Macaw') all kwargs",
+      "expected": "This parrot wouldn't run if you put 0 volts through it. Lovely plumage, the Macaw. It's dead!",
+      "actual": "This parrot wouldn't run if you put 0 volts through it. Lovely plumage, the Macaw. It's dead!",
+      "passed": true
+    }
+  ],
+  "unsupported_cases": [
+    {
+      "partition": "unsupported",
+      "label": "parrot() \u2014 missing required voltage",
+      "expected_exception": "TypeError",
+      "raised": "TypeError",
+      "passed": true
+    },
+    {
+      "partition": "unsupported",
+      "label": "parrot(110, voltage=220) \u2014 duplicate keyword arg",
+      "expected_exception": "TypeError",
+      "raised": "TypeError",
+      "passed": true
+    },
+    {
+      "partition": "unsupported",
+      "label": "parrot(actor='John Cleese') \u2014 unknown keyword arg",
+      "expected_exception": "TypeError",
+      "raised": "TypeError",
+      "passed": true
+    },
+    {
+      "partition": "unsupported",
+      "label": "function_with_one_argument(0, number=0) \u2014 dup in 1-arg fn",
+      "expected_exception": "TypeError",
+      "raised": "TypeError",
+      "passed": true
+    }
+  ],
+  "boundary_table": [
+    {
+      "partition": "valid interior",
+      "label": "parrot(1000) \u2014 1 positional [ANCHOR]",
+      "kind": "str"
+    },
+    {
+      "partition": "valid boundary",
+      "label": "parrot(voltage=1000) \u2014 1 keyword [ANCHOR]",
+      "kind": "str"
+    },
+    {
+      "partition": "valid interior",
+      "label": "parrot(voltage=1000000, action='VOOOOOM') [ANCHOR]",
+      "kind": "str"
+    },
+    {
+      "partition": "valid interior",
+      "label": "parrot(action='VOOOOOM', voltage=1000000) order-free",
+      "kind": "str"
+    },
+    {
+      "partition": "valid interior",
+      "label": "parrot(1000000, 'bereft of life', 'jump') 3 positional",
+      "kind": "str"
+    },
+    {
+      "partition": "valid interior",
+      "label": "parrot(1000, state='pushing up the daisies') pos+kw",
+      "kind": "str"
+    },
+    {
+      "partition": "valid boundary",
+      "label": "parrot(0) \u2014 voltage boundary (neighboring 0)",
+      "kind": "str"
+    },
+    {
+      "partition": "valid boundary",
+      "label": "parrot(voltage=0, state='dead', action='run', parrot_type='Macaw') all kwargs",
+      "kind": "str"
+    },
+    {
+      "partition": "unsupported",
+      "label": "parrot() \u2014 missing required voltage",
+      "kind": "TypeError"
+    },
+    {
+      "partition": "unsupported",
+      "label": "parrot(110, voltage=220) \u2014 duplicate keyword arg",
+      "kind": "TypeError"
+    },
+    {
+      "partition": "unsupported",
+      "label": "parrot(actor='John Cleese') \u2014 unknown keyword arg",
+      "kind": "TypeError"
+    },
+    {
+      "partition": "unsupported",
+      "label": "function_with_one_argument(0, number=0) \u2014 dup in 1-arg fn",
+      "kind": "TypeError"
+    }
+  ]
+}
