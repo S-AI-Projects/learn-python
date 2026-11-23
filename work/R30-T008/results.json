@@ -1,0 +1,94 @@
+{
+  "issue": "#13",
+  "task": "R30-T008",
+  "target_file": "src/data_types/test_dictionaries.py",
+  "covered_source_lines": {
+    "failure_path_key_error": "lines 38-40, 61",
+    "fallback_path_get_sentinel": "lines 38-40",
+    "smallest_input_empty_dict": "line 18"
+  },
+  "tool_versions": {
+    "python": "3.9.6",
+    "pytest": "8.4.2"
+  },
+  "pytest_execution": {
+    "command": "/Library/Developer/CommandLineTools/usr/bin/python3 -m pytest src/data_types/test_dictionaries.py -v --tb=short",
+    "exit_code": 0,
+    "success": true
+  },
+  "contract_checks": [
+    {
+      "name": "source_anchors_baseline",
+      "source_lines": "38-40",
+      "input": "fruits_dictionary = {'apple': 'green', 'banana': 'yellow'}",
+      "expected": "dict instance, apple=green, banana=yellow",
+      "actual": "type=dict, apple=green, banana=yellow",
+      "status": "PASSED"
+    },
+    {
+      "name": "neighboring_get_existing",
+      "source_lines": "38-40",
+      "input": "fruits.get('apple'), fruits.get('banana', 'default_val')",
+      "expected": "apple='green', banana='yellow'",
+      "actual": "apple='green', banana='yellow'",
+      "status": "PASSED"
+    },
+    {
+      "name": "neighboring_get_custom_sentinel",
+      "source_lines": "38-40",
+      "input": "fruits.get('mango', 'unknown fruit')",
+      "expected": "unknown fruit",
+      "actual": "unknown fruit",
+      "status": "PASSED"
+    },
+    {
+      "name": "failure_path_missing_key_lookup",
+      "source_lines": "38-40",
+      "input": "fruits['non_existent_key']",
+      "expected": "raise KeyError('non_existent_key')",
+      "actual": "KeyError raised: 'non_existent_key'",
+      "status": "PASSED"
+    },
+    {
+      "name": "state_preservation_after_key_error",
+      "source_lines": "38-40",
+      "input": "fruits state check after KeyError",
+      "expected": "len=2, keys={'banana', 'apple'}",
+      "actual": "len=2, keys={'banana', 'apple'}",
+      "status": "PASSED"
+    },
+    {
+      "name": "post_failure_recovery_lookup",
+      "source_lines": "38-40",
+      "input": "fruits['apple'], fruits['banana']",
+      "expected": "apple='green', banana='yellow'",
+      "actual": "apple='green', banana='yellow'",
+      "status": "PASSED"
+    },
+    {
+      "name": "failure_path_del_missing_key",
+      "source_lines": "61",
+      "input": "del fruits['non_existent_fruit']",
+      "expected": "raise KeyError and preserve dictionary state",
+      "actual": "KeyError raised, len=2, keys={'banana', 'apple'}",
+      "status": "PASSED"
+    },
+    {
+      "name": "valid_absent_fallback_get_none",
+      "source_lines": "38-40",
+      "input": "fruits.get('missing_key')",
+      "expected": "None",
+      "actual": "None",
+      "status": "PASSED"
+    },
+    {
+      "name": "smallest_input_empty_dictionary",
+      "source_lines": "18",
+      "input": "empty_dict = {}",
+      "expected": "len=0, bool=False, get() is None, KeyError on [] and del",
+      "actual": "len=0, bool=False, get_none=True, lookup_err=True, del_err=True",
+      "status": "PASSED"
+    }
+  ],
+  "all_passed": true
+}
