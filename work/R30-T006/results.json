@@ -1,0 +1,60 @@
+{
+  "python_version": "Python 3.9.6",
+  "pytest_version": "pytest 8.4.2",
+  "pytest_command": "/Library/Developer/CommandLineTools/usr/bin/python3 -m pytest /Users/mokshinisingh/Desktop/SnAI-assignment/Task6/learn-python/src/functions/test_function_scopes.py -v --tb=short",
+  "pytest_returncode": 0,
+  "pytest_test_count": 3,
+  "named_simplified_responsibility": "resolve_local_scope_shadowing",
+  "equivalence_checks": [
+    {
+      "check": "refactored_helper_execution",
+      "helper": "resolve_local_scope_shadowing",
+      "input": "local value",
+      "expected": "local value",
+      "actual": "local value",
+      "passed": true
+    },
+    {
+      "check": "source_anchors_equivalence",
+      "baseline": {
+        "initial": "initial value inside test function",
+        "post_local": "initial value inside test function",
+        "post_nonlocal": "nonlocal value"
+      },
+      "refactored": {
+        "initial": "initial value inside test function",
+        "post_local": "initial value inside test function",
+        "post_nonlocal": "nonlocal value"
+      },
+      "passed": true
+    },
+    {
+      "check": "neighboring_supported_input",
+      "inputs": {
+        "initial": "neighbor enclosing initial",
+        "local": "neighbor local custom",
+        "nonlocal": "neighbor nonlocal custom"
+      },
+      "expected": {
+        "step_1": "neighbor enclosing initial",
+        "local_return": "neighbor local custom",
+        "step_2": "neighbor enclosing initial",
+        "nonlocal_return": "neighbor nonlocal custom",
+        "step_3": "neighbor nonlocal custom"
+      },
+      "actual": {
+        "step_1": "neighbor enclosing initial",
+        "local_return": "neighbor local custom",
+        "step_2": "neighbor enclosing initial",
+        "nonlocal_return": "neighbor nonlocal custom",
+        "step_3": "neighbor nonlocal custom"
+      },
+      "passed": true
+    },
+    {
+      "check": "test_functions_direct_invocation",
+      "passed": true
+    }
+  ],
+  "all_checks_passed": true
+}
