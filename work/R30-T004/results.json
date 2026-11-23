@@ -1,0 +1,195 @@
+{
+  "python_version": "Python 3.9.6",
+  "pytest_version": "pytest 8.4.2",
+  "pytest_command": "/Library/Developer/CommandLineTools/usr/bin/python3 -m pytest /Users/mokshinisingh/Desktop/SnAI-assignment/Task4/learn-python/src/getting_started/test_variables.py -v --tb=short",
+  "pytest_returncode": 0,
+  "pytest_test_count": 1,
+  "seed": 42,
+  "total_cases_checked": 103,
+  "property_checks_passed": true,
+  "falsification_checks": {
+    "isolation_violation_detected": true,
+    "type_violation_detected": true,
+    "broken_file_detected_by_pytest": true,
+    "temp_dir_cleaned": true,
+    "clean_disk_verified": true
+  },
+  "falsification_passed": true,
+  "cases_sample": [
+    {
+      "case": "source_anchors",
+      "expected": {
+        "int": 5,
+        "str": "John",
+        "rebound": "Sally"
+      },
+      "actual": {
+        "int": 5,
+        "str": "John",
+        "rebound": "Sally"
+      },
+      "passed": true
+    },
+    {
+      "case": "derived_neighbors",
+      "expected": {
+        "int": 6,
+        "str": "Alice",
+        "rebound": "Bob"
+      },
+      "actual": {
+        "int": 6,
+        "str": "Alice",
+        "rebound": "Bob"
+      },
+      "passed": true
+    },
+    {
+      "case": "readable_small_example",
+      "expected": {
+        "int": 100,
+        "str": "Charlie",
+        "rebound": "Delta"
+      },
+      "actual": {
+        "int": 100,
+        "str": "Charlie",
+        "rebound": "Delta"
+      },
+      "passed": true
+    },
+    {
+      "case": "property_case_000",
+      "inputs": {
+        "val_int": -6352,
+        "val_str": "alpha_0",
+        "val_init": 379,
+        "val_rebound": "rebound_0"
+      },
+      "actual": {
+        "var_a": -6352,
+        "type_a": "int",
+        "var_b": "alpha_0",
+        "type_b": "str",
+        "var_c": "rebound_0",
+        "type_c": "str"
+      },
+      "repeat_match": true,
+      "passed": true
+    },
+    {
+      "case": "property_case_001",
+      "inputs": {
+        "val_int": -988,
+        "val_str": "delta_1",
+        "val_init": 114,
+        "val_rebound": "rebound_1"
+      },
+      "actual": {
+        "var_a": -988,
+        "type_a": "int",
+        "var_b": "delta_1",
+        "type_b": "str",
+        "var_c": "rebound_1",
+        "type_c": "str"
+      },
+      "repeat_match": true,
+      "passed": true
+    },
+    {
+      "case": "property_case_002",
+      "inputs": {
+        "val_int": -5428,
+        "val_str": "beta_2",
+        "val_init": 346,
+        "val_rebound": "rebound_2"
+      },
+      "actual": {
+        "var_a": -5428,
+        "type_a": "int",
+        "var_b": "beta_2",
+        "type_b": "str",
+        "var_c": "rebound_2",
+        "type_c": "str"
+      },
+      "repeat_match": true,
+      "passed": true
+    },
+    {
+      "case": "property_case_003",
+      "inputs": {
+        "val_int": 7870,
+        "val_str": "beta_3",
+        "val_init": 302,
+        "val_rebound": "rebound_3"
+      },
+      "actual": {
+        "var_a": 7870,
+        "type_a": "int",
+        "var_b": "beta_3",
+        "type_b": "str",
+        "var_c": "rebound_3",
+        "type_c": "str"
+      },
+      "repeat_match": true,
+      "passed": true
+    },
+    {
+      "case": "property_case_004",
+      "inputs": {
+        "val_int": 3825,
+        "val_str": "alpha_4",
+        "val_init": 15,
+        "val_rebound": "rebound_4"
+      },
+      "actual": {
+        "var_a": 3825,
+        "type_a": "int",
+        "var_b": "alpha_4",
+        "type_b": "str",
+        "var_c": "rebound_4",
+        "type_c": "str"
+      },
+      "repeat_match": true,
+      "passed": true
+    },
+    {
+      "case": "property_case_005",
+      "inputs": {
+        "val_int": -6930,
+        "val_str": "delta_5",
+        "val_init": 119,
+        "val_rebound": "rebound_5"
+      },
+      "actual": {
+        "var_a": -6930,
+        "type_a": "int",
+        "var_b": "delta_5",
+        "type_b": "str",
+        "var_c": "rebound_5",
+        "type_c": "str"
+      },
+      "repeat_match": true,
+      "passed": true
+    },
+    {
+      "case": "property_case_006",
+      "inputs": {
+        "val_int": 6559,
+        "val_str": "alpha_6",
+        "val_init": 287,
+        "val_rebound": "rebound_6"
+      },
+      "actual": {
+        "var_a": 6559,
+        "type_a": "int",
+        "var_b": "alpha_6",
+        "type_b": "str",
+        "var_c": "rebound_6",
+        "type_c": "str"
+      },
+      "repeat_match": true,
+      "passed": true
+    }
+  ]
+}
